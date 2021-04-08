@@ -7,15 +7,22 @@ class Container {
     def steps
     def token
     def nodejs_version = '14.16.1'
+    def initialized = false
     Container(steps, token) {
         this.steps = steps
         this.token = token
     }
 
     def init() {
-        steps.sh 'wget https://nodejs.org/dist/v10.21.0/node-v10.21.0-linux-x64.tar.xz && tar -xf node-v10.21.0-linux-x64.tar.xz --directory /usr/local --strip-components 1' 
-        steps.sh 'npm install -g snyk'
-        steps.sh "snyk auth ${token}"
+        if !initialized {
+            // install nodejs
+            steps.sh "wget https://nodejs.org/dist/v${nodejs_version}/node-v${nodejs_version}-linux-x64.tar.xz && tar -xf node-v${nodejs_version}-linux-x64.tar.xz --directory /usr/local --strip-components 1' 
+            // install snyk
+            steps.sh 'npm install -g snyk'
+            // sny auth
+            steps.sh "snyk auth ${token}"
+        }
+        initialized = true
     }
 
     def hello(param) {
