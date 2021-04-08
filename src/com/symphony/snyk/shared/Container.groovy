@@ -8,6 +8,7 @@ class Container {
     def token
     def nodejs_version = '14.16.1'
     def initialized = false
+    def policy_repo = 'https://github.com/sandro-lex-symphony/docker-images'
     Container(steps, token) {
         this.steps = steps
         this.token = token
@@ -32,7 +33,8 @@ class Container {
 
     def test(image) {
         init()
-        steps.sh "snyk container test ${image} || true"
+        steps.git "url: $policy_repo"
+        steps.sh "snyk container test --severity-threshold=high --policy-path ${policy_repp}/debian-policy ${image}"
     }
 }
 
