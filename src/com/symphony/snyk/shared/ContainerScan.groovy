@@ -3,14 +3,25 @@ package com.symphony.snyk.shared
 // 1. snyk auth token
 // 2. snyk container test --severity x --policy-path y image:tag
 // 3. snyk container monitor --policy-path abc
-class ContainerScan {
+class Container {
     def steps
-    ContainerScan(steps) {
+    def nodeVersion = '14.16.1'
+    Container(steps, snyk_token) {
         this.steps = steps
+        this.snyk_token = snyk_token
+        // instal nodejs LTS
+        steps.sh 'sh wget https://nodejs.org/dist/v14.16.1/node-v14.16.1-linux-x64.tar.xz && tar -xf node-v14.16.1-linux-x64.tar.xz --directory /usr/local --strip-components 1'
+        // install snyk
+        steps.sh 'npm install -g snyk'
     }
+
     def hello(param) {
         steps.echo 'scan this ' + param
         steps.sh 'pwd'
+    }
+
+    def test(image, severity='high') {
+        steps.sh "snyk container test ${image} || true"
     }
 }
 
