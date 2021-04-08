@@ -10,9 +10,9 @@ class Container {
     Container(steps) {
         this.steps = steps
         // instal nodejs LTS
-        this.steps.sh 'sh wget https://nodejs.org/dist/v14.16.1/node-v14.16.1-linux-x64.tar.xz && tar -xf node-v14.16.1-linux-x64.tar.xz --directory /usr/local --strip-components 1'
+        //this.steps.sh 'sh wget https://nodejs.org/dist/v14.16.1/node-v14.16.1-linux-x64.tar.xz && tar -xf node-v14.16.1-linux-x64.tar.xz --directory /usr/local --strip-components 1'
         // install snyk
-        this.steps.sh 'npm install -g snyk'
+        //this.steps.sh 'npm install -g snyk'
     }
 
     def hello(param) {
