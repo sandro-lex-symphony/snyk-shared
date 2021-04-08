@@ -21,6 +21,9 @@ class Container {
     }
 
     def test(image, severity='high') {
+        steps.withCredentials([string(credentialsId: 'SNYK_API_TOKEN', variable: 'SNYK_TOKEN')]) {
+            steps.sh 'snyk auth '+SNYK_TOKEN  
+        }
         steps.sh "snyk container test ${image} || true"
     }
 }
