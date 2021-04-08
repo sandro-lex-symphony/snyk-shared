@@ -8,7 +8,7 @@ class ContainerScan {
     ContainerScan(steps) {
         this.steps = steps
     }
-    static def hello(param) {
+    def hello(param) {
         steps.echo 'scan this ' + param
         steps.sh 'pwd'
     }
