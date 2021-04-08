@@ -9,7 +9,7 @@ class Container {
     Container(steps) {
         this.steps = steps
         // install nodejs
-        steps.sh "wget https://nodejs.org/dist/v${nodejs_version}/node-v${nodejs_version}-linux-x64.tar.xz && tar -xf node-v}$nodejs_version}-linux-x64.tar.xz --directory /usr/local --strip-components 1"
+        steps.sh "wget https://nodejs.org/dist/v${nodejs_version}/node-v${nodejs_version}-linux-x64.tar.xz && tar -xf node-v{$nodejs_version}-linux-x64.tar.xz --directory /usr/local --strip-components 1"
         // install snyk
         steps.sh 'npm install -g snyk'
     }
