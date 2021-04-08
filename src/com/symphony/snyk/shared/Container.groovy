@@ -33,7 +33,7 @@ class Container {
 
     def test(image) {
         init()
-        steps.git "url: ${policy_repo}, branch: master"
+        steps.git "url: 'https://github.com/sandro-lex-symphony/docker-images', branch: 'master'"
         steps.sh 'ls -al'
         //steps.sh "snyk container test --severity-threshold=high  ${image}"
     }
