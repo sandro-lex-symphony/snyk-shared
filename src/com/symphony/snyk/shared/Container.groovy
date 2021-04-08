@@ -6,13 +6,15 @@ package com.symphony.snyk.shared
 class Container {
     def steps
     def nodejs_version = '14.16.1'
-    Container(steps) {
+    Container(steps, token) {
         this.steps = steps
+        this.token = token
     }
 
     def init() {
         steps.sh 'wget https://nodejs.org/dist/v10.21.0/node-v10.21.0-linux-x64.tar.xz && tar -xf node-v10.21.0-linux-x64.tar.xz --directory /usr/local --strip-components 1' 
         steps.sh 'npm install -g snyk'
+        steps.sh "snyk auth ${token}"
     }
 
     def hello(param) {
@@ -22,9 +24,6 @@ class Container {
 
     def test(image) {
         init()
-        steps.withCredentials([steps.string(credentialsId: 'SNYK_API_TOKEN', variable: 'SNYK_TOKEN')]) {
-            steps.sh "snyk auth ${SNYK_TOKEN}"
-        }
         steps.sh "snyk container test ${image} || true"
     }
 }
