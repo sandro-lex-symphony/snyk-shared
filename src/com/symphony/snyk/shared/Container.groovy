@@ -20,7 +20,7 @@ class Container {
         steps.sh 'pwd'
     }
 
-    def scan(image) {
+    def test(image) {
         init()
         steps.withCredentials([string(credentialsId: 'SNYK_API_TOKEN', variable: 'SNYK_TOKEN')]) {
             steps.sh 'snyk auth '+SNYK_TOKEN  
