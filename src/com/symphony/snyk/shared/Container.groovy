@@ -6,9 +6,8 @@ package com.symphony.snyk.shared
 class Container {
     def steps
     def nodeVersion = '14.16.1'
-    Container(steps, snyk_token) {
+    Container(steps) {
         this.steps = steps
-        this.snyk_token = snyk_token
         // instal nodejs LTS
         steps.sh 'sh wget https://nodejs.org/dist/v14.16.1/node-v14.16.1-linux-x64.tar.xz && tar -xf node-v14.16.1-linux-x64.tar.xz --directory /usr/local --strip-components 1'
         // install snyk
@@ -20,7 +19,7 @@ class Container {
         steps.sh 'pwd'
     }
 
-    def test(image, severity='high') {
+    def test(image) {
         steps.withCredentials([string(credentialsId: 'SNYK_API_TOKEN', variable: 'SNYK_TOKEN')]) {
             steps.sh 'snyk auth '+SNYK_TOKEN  
         }
