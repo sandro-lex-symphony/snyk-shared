@@ -5,6 +5,7 @@ package com.symphony.snyk.shared
 // 3. snyk container monitor --policy-path abc
 class Container {
     def steps
+    def token
     def nodejs_version = '14.16.1'
     Container(steps, token) {
         this.steps = steps
