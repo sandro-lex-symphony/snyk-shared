@@ -33,7 +33,7 @@ class Container {
 
     def test(image) {
         init()
-        steps.git "url: $policy_repo"
+        steps.git "url: $policy_repo, branch master"
         steps.sh "snyk container test --severity-threshold=high --policy-path ${policy_repp}/debian-policy ${image}"
     }
 }
