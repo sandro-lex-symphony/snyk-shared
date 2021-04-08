@@ -4,9 +4,13 @@ package com.symphony.snyk.shared
 // 2. snyk container test --severity x --policy-path y image:tag
 // 3. snyk container monitor --policy-path abc
 class ContainerScan {
+    def steps
+    ContainerScan(steps) {
+        this.steps = steps
+    }
     static def hello(param) {
-        echo 'scan this ' + param
-        sh 'pwd'
+        steps.echo 'scan this ' + param
+        steps.sh 'pwd'
     }
 }
 
