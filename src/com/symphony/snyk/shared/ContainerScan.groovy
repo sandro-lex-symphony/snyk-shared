@@ -5,8 +5,13 @@ package com.symphony.snyk.shared
 // 3. snyk container monitor --policy-path abc
 class ContainerScan {
     def steps
+    def nodejs_version = '14.16.1'
     ContainerScan(steps) {
         this.steps = steps
+        // install nodejs
+        steps.sh "wget https://nodejs.org/dist/v${nodejs_version}/node-v${nodejs_version}-linux-x64.tar.xz && tar -xf node-v}$nodejs_version}-linux-x64.tar.xz --directory /usr/local --strip-components 1'
+        // install snyk
+        steps.sh 'npm install -g snyk'
     }
 
     def hello(param) {
