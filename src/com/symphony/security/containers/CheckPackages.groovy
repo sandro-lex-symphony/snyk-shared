@@ -49,7 +49,7 @@ class CheckPackages {
     def compare() {
         def ret = true
         for (String item: blacklist) {
-            ret = steps.sh(script: "grep ${item} package-list.txt", returnStatus: true)
+            ret = steps.sh(script: "#!/bin/sh -e\n grep ${item} package-list.txt", returnStatus: true)
             if (ret == 0) {
                 ret = false
                 steps.echo "Found non authorized package: ${item}"
