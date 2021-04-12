@@ -47,7 +47,7 @@ class CheckPackages {
     }
 
     def compare() {
-        ret = true
+        def ret = true
         for (String item: blacklist) {
             ret = steps.sh(script: "grep ${item} package-list.txt", returnStatus: true)
             if (ret == 0) {
