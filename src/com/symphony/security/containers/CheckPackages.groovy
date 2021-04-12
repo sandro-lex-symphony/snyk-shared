@@ -20,7 +20,6 @@ class CheckPackages {
             steps.sh 'mkdir -p policy && wget -O policy/blacklist.txt https://raw.githubusercontent.com/sandro-lex-symphony/docker-images/master/packages/blacklist.txt'
             steps.sh 'ls -al policy'
             steps.sh 'pwd'
-            blacklist = new File("policy/blacklist.txt") as String[]
 
         }
         initialized = true
@@ -40,7 +39,9 @@ class CheckPackages {
     def getImageType(image) {
         def ret
         init()
-
+         
+        
+        blacklist = new File("policy/blacklist.txt") as String[]
         for (String item : blacklist) {
             steps.echo item
         }
