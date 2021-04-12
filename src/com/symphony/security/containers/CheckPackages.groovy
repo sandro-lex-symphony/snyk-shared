@@ -20,9 +20,8 @@ class CheckPackages {
     }
 
     def getImageType(image) {
-        //steps.sh "docker run --rm -it ${image} cat /etc/os-release > os-release.txt"
-        def release = "docker run --rm -it ${image} cat /etc/os-release".execute()
-        println release.text
+        steps.sh "docker run --rm -it ${image} cat /etc/os-release > os-release.txt"
+        steps.sh 'cat os-release.txt'
     }
 
 }
