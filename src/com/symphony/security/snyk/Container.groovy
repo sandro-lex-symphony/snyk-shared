@@ -36,7 +36,7 @@ class Container {
     def test(image) {
         init()
         
-        steps.sh 'mkdir policy && wget https://raw.githubusercontent.com/sandro-lex-symphony/docker-images/master/debian-policy/.snyk && mv .snyk policy/'
+        steps.sh 'mkdir -p policy && wget -O policy/.snyk https://raw.githubusercontent.com/sandro-lex-symphony/docker-images/master/debian-policy/.snyk'
         steps.sh 'ls -al'
         steps.sh "snyk container test --severity-threshold=high  --policy-path=policy ${image}"
     }
