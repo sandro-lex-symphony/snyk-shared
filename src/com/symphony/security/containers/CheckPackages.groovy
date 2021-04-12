@@ -10,6 +10,7 @@ class CheckPackages {
     def steps
     def initialized = false
     def blacklist
+
     CheckPackages(steps) {
         this.steps = steps
     }
@@ -37,6 +38,11 @@ class CheckPackages {
 
     def getImageType(image) {
         init()
+
+        for (String item : blacklist) {
+            steps.echo item
+        }
+
         def ret
         steps.sh "docker run --rm -i --entrypoint='' ${image} cat /etc/os-release > os-release.txt"
         ret = steps.sh(script: "grep Debian os-release.txt", returnStatus: true)
@@ -55,11 +61,6 @@ class CheckPackages {
         if (ret == 0) {
             return 'alpine'
         }
-
-        for (String item : blacklist) {
-            steps.echo item
-        }
-  
     }
 
 }
