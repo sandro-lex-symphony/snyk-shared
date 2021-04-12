@@ -18,7 +18,8 @@ class CheckPackages {
     def init() {
         if (!initialized) {
             steps.sh 'mkdir -p policy && wget -O policy/blacklist.txt https://raw.githubusercontent.com/sandro-lex-symphony/docker-images/master/packages/blacklist.txt'
-            steps.sh 'ls -al'
+            steps.sh 'ls -al policy'
+            steps.sh 'pwd'
             blacklist = new File("policy/blacklist.txt") as String[]
 
         }
