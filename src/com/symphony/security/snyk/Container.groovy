@@ -1,4 +1,4 @@
-package com.symphony.security.snyk.shared
+package com.symphony.security.snyk
 
 // 1. snyk auth token
 // 2. snyk container test --severity x --policy-path y image:tag
