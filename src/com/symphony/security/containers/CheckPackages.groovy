@@ -19,8 +19,9 @@ class CheckPackages {
         if (!initialized) {
             steps.sh 'mkdir -p policy && wget -O policy/blacklist.txt https://raw.githubusercontent.com/sandro-lex-symphony/docker-images/master/packages/blacklist.txt'
             List<String> tmplist(String filePath) {
-            File file = new File('policy/blacklist.txt')
-            blacklist = file.readLines()
+                File file = new File('policy/blacklist.txt')
+                blacklist = file.readLines()
+            }
         }
         initialized = true
     }
@@ -37,13 +38,13 @@ class CheckPackages {
     }
 
     def getImageType(image) {
+        def ret
         init()
 
         for (String item : blacklist) {
             steps.echo item
         }
-
-        def ret
+        
         steps.sh "docker run --rm -i --entrypoint='' ${image} cat /etc/os-release > os-release.txt"
         ret = steps.sh(script: "grep Debian os-release.txt", returnStatus: true)
         if (ret == 0) {
