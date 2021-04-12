@@ -55,7 +55,7 @@ class CheckPackages {
         def bad_list
         for (String blacklisted_package: blacklist) {
             for (String installed_pkg: pkgList) {
-                if installed_pkg.contains(blacklisted_package) {
+                if (installed_pkg.contains(blacklisted_package)) {
                     bad_list += ' ' + blacklisted_package
                 }
             }
