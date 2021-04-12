@@ -9,6 +9,7 @@ class CheckPackages {
     def policy_repo = 'https://github.com/sandro-lex-symphony/docker-images'
     def steps
     def initialized = false
+    def blacklist
     CheckPackages(steps) {
         this.steps = steps
     }
@@ -16,10 +17,26 @@ class CheckPackages {
     def init() {
         if (!initialized) {
             steps.sh 'mkdir -p policy && wget -O policy/blacklist.txt https://raw.githubusercontent.com/sandro-lex-symphony/docker-images/master/packages/blacklist.txt'
+            List<String> tmplist(String filePath) {
+            File file = new File('policy/blacklist.txt')
+            blacklist = file.readLines()
+        }
+        initialized = true
+    }
+
+    def getPackageList(image) {
+        def flavor == getImageType(image)
+        if (flavor == 'debian' || flavor == 'ubuntu') {
+            steps.sh "docker run --rm -i --entrypoint='' ${image} dpkg -l > package-list.txt"
+        } else if (flavor == 'centos') {
+            steps.sh "docker run --rm -i --entrypoint='' ${image} rpm -qa > package-list.txt"
+        } else if (flavor == 'alpine') {
+            steps.sh "docker run --rm -i --entrypoint='' ${image} apk info > package-list.txt"
         }
     }
 
     def getImageType(image) {
+        init()
         def ret
         steps.sh "docker run --rm -i --entrypoint='' ${image} cat /etc/os-release > os-release.txt"
         ret = steps.sh(script: "grep Debian os-release.txt", returnStatus: true)
@@ -39,8 +56,10 @@ class CheckPackages {
             return 'alpine'
         }
 
-            
-        
+        for (String item : blacklist) {
+            steps.echo item
+        }
+  
     }
 
 }
