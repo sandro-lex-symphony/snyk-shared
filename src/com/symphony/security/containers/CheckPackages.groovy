@@ -22,8 +22,8 @@ class CheckPackages {
     def getImageType(image) {
         steps.sh "docker run --rm -i --entrypoint='' ${image} cat /etc/os-release > os-release.txt"
         steps.sh 'cat os-release.txt'
-        def proc = 'cat os-release.txt'.execute() | 'grep Debian'.execute()
-        println proc.text
+        def debian steps.sh('grep Debian os-release.txt')
+        println debian.text
     }
 
 }
