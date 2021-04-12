@@ -6,11 +6,11 @@ package com.symphony.security.containers
 // 4. check against policy
 // 5. fail not fail
 class CheckPackages {
-    def policy_repo = 'https://github.com/sandro-lex-symphony/docker-images'
-    def policy_file = 'policy/blacklist.txt'
-    def steps
-    def initialized = false
-    def blacklist
+    private String policy_repo = 'https://github.com/sandro-lex-symphony/docker-images'
+    private String policy_file = 'policy/blacklist.txt'
+    private def steps
+    private Boolean initialized = false
+    private String[] blacklist
 
     CheckPackages(steps) {
         this.steps = steps
@@ -19,15 +19,11 @@ class CheckPackages {
     def init() {
         if (!initialized) {
             steps.sh "mkdir -p policy && wget -O ${policy_file} https://raw.githubusercontent.com/sandro-lex-symphony/docker-images/master/packages/blacklist.txt"
-            steps.sh 'ls -al policy'
-            steps.sh 'pwd'
             def tmp_file
             if (steps.fileExists(policy_file)) {
                 tmp_file = steps.readFile policy_file
             }
-            String[] bl = tmp_file.split("\n");
-            steps.echo bl[1]
-
+            blacklist = tmp_file.split("\n");
         }
         initialized = true
     }
@@ -46,13 +42,8 @@ class CheckPackages {
     def getImageType(image) {
         def ret
         init()
-         
-        
-        // blacklist = new File("policy/blacklist.txt") as String[]
-        // for (String item : blacklist) {
-        //     steps.echo item
-        // }
-
+        steps.echo blacklist[2]
+             
         steps.sh "docker run --rm -i --entrypoint='' ${image} cat /etc/os-release > os-release.txt"
         ret = steps.sh(script: "grep Debian os-release.txt", returnStatus: true)
         if (ret == 0) {
