@@ -21,12 +21,23 @@ class CheckPackages {
 
     def getImageType(image) {
         steps.sh "docker run --rm -i --entrypoint='' ${image} cat /etc/os-release > os-release.txt"
-        def debian = steps.sh(script: "grep Debian os-release.txt", returnStatus: true)
-        if (debian == 0) {
-            steps.echo "XXX DEBIAN!!!!"
+        def ret = steps.sh(script: "grep Debian os-release.txt", returnStatus: true)
+        if (ret == 0) {
+            return 'debian'
         }
         def ubuntu = steps.sh(script: "grep Ubuntu os-release.txt", returnStatus: true)
-        steps.echo "XXXX UBUNTU: ${ubuntu}"
+        if (ubuntu == 0) {
+            return 'ubuntu'
+        }
+        def centos = steps.sh(script: "grep CentOS os-release.txt", returnStatus: true)
+        if (centos == 0) {
+            return 'centos'
+        }
+        def centos = steps.sh(script: "grep Alpine os-release.txt", returnStatus: true)
+        if (centos == 0) {
+            return 'alpine'
+        }
+
             
         
     }
