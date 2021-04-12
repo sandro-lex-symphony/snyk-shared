@@ -44,18 +44,27 @@ class CheckPackages {
         } else if (flavor == 'alpine') {
             steps.sh "docker run --rm -i --entrypoint='' ${image} apk info > package-list.txt"
         }
+        def tmp_file
+        if (steps.fileExists('package-list.txt')) {
+            tmp_file = steps.readFile 'package-list.txt'
+        }
+        pkgList = tmp_file.split("\n");
     }
 
     def compare() {
-        def ret = true
-        for (String item: blacklist) {
-            ret = steps.sh(script: "#!/bin/sh -e\n grep ${item} package-list.txt", returnStatus: true)
-            if (ret == 0) {
-                ret = false
-                steps.echo "Found non authorized package: ${item}"
+        def bad_list
+        for (String blacklisted_package: blacklist) {
+            for (String installed_pkg: pkgList) {
+                if installed_pkg.contains(blacklisted_package) {
+                    bad_list += ' ' + blacklisted_package
+                }
             }
         }
-        return ret
+        if (!bad_list.isEmpty()) {
+            steps.echo bad_list
+            return 1
+        }
+        return 0
     }
 
     def getImageType(image) {
