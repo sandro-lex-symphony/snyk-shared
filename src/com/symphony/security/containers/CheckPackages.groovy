@@ -7,6 +7,7 @@ package com.symphony.security.containers
 // 5. fail not fail
 class CheckPackages {
     def policy_repo = 'https://github.com/sandro-lex-symphony/docker-images'
+    def policy_file = 'policy/blacklist.txt'
     def steps
     def initialized = false
     def blacklist
@@ -17,9 +18,14 @@ class CheckPackages {
 
     def init() {
         if (!initialized) {
-            steps.sh 'mkdir -p policy && wget -O policy/blacklist.txt https://raw.githubusercontent.com/sandro-lex-symphony/docker-images/master/packages/blacklist.txt'
+            steps.sh "mkdir -p policy && wget -O ${policy_file} https://raw.githubusercontent.com/sandro-lex-symphony/docker-images/master/packages/blacklist.txt"
             steps.sh 'ls -al policy'
             steps.sh 'pwd'
+            def tmp_file
+            if (steps.fileExists(policy_file)) {
+                tmp_file = steps.readFile policy_file
+            }
+            steps.echo tmp_file
 
         }
         initialized = true
@@ -41,10 +47,10 @@ class CheckPackages {
         init()
          
         
-        blacklist = new File("policy/blacklist.txt") as String[]
-        for (String item : blacklist) {
-            steps.echo item
-        }
+        // blacklist = new File("policy/blacklist.txt") as String[]
+        // for (String item : blacklist) {
+        //     steps.echo item
+        // }
 
         steps.sh "docker run --rm -i --entrypoint='' ${image} cat /etc/os-release > os-release.txt"
         ret = steps.sh(script: "grep Debian os-release.txt", returnStatus: true)
