@@ -11,9 +11,16 @@ class CheckPackages {
     private def steps
     private Boolean initialized = false
     private String[] blacklist
+    private String[] pkgList
 
     CheckPackages(steps) {
         this.steps = steps
+    }
+
+    def run(image) {
+        init()
+        getPackageList(image)
+        return compare()
     }
 
     def init() {
@@ -39,10 +46,20 @@ class CheckPackages {
         }
     }
 
+    def compare() {
+        ret = true
+        for (String item: blacklist) {
+            ret = steps.sh(script: "grep ${item} package-list.txt", returnStatus: true)
+            if (ret == 0) {
+                ret = false
+                steps.echo "Found non authorized package: ${item}"
+            }
+        }
+        return ret
+    }
+
     def getImageType(image) {
         def ret
-        init()
-        steps.echo blacklist[2]
              
         steps.sh "docker run --rm -i --entrypoint='' ${image} cat /etc/os-release > os-release.txt"
         ret = steps.sh(script: "grep Debian os-release.txt", returnStatus: true)
