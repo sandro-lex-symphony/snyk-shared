@@ -25,7 +25,8 @@ class CheckPackages {
             if (steps.fileExists(policy_file)) {
                 tmp_file = steps.readFile policy_file
             }
-            steps.echo tmp_file
+            String[] blacklist = tmp_file.split(" ");
+            steps.echo blacklist[1]
 
         }
         initialized = true
