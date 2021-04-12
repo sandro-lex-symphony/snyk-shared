@@ -25,7 +25,7 @@ class CheckPackages {
     }
 
     def getPackageList(image) {
-        def flavor == getImageType(image)
+        def flavor = getImageType(image)
         if (flavor == 'debian' || flavor == 'ubuntu') {
             steps.sh "docker run --rm -i --entrypoint='' ${image} dpkg -l > package-list.txt"
         } else if (flavor == 'centos') {
