@@ -27,7 +27,7 @@ class CheckPackages {
             steps.echo "XXX UBUNTU XXX"
         }
         def debian = steps.sh(script: "grep Debian os-release.txt")
-        if debian == 0  {
+        if (debian == 0)  {
             steps.echo "XXX DEBIAN XXX"
         }
     }
