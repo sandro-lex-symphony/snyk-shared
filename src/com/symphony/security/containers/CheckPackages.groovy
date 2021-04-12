@@ -9,7 +9,7 @@ class CheckPackages {
     def policy_repo = 'https://github.com/sandro-lex-symphony/docker-images'
     def steps
     def initialized = false
-    CheckPacakges(steps) {
+    CheckPackages(steps) {
         this.steps = steps
     }
 
