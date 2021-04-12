@@ -1,4 +1,4 @@
-package com.symphony.security.container
+package com.symphony.security.containers
 
 // 1. get blacklist from repo
 // 2. get image type
