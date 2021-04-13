@@ -61,10 +61,10 @@ class CheckPackages {
             }
         }
         if (!bad_list.isEmpty()) {
-            steps.echo bad_list
-            return 1
+            steps.echo "Found non authorized packages: ${bad_list}"
+            return false
         }
-        return 0
+        return true
     }
 
     def getImageType(image) {
@@ -87,6 +87,14 @@ class CheckPackages {
         if (ret == 0) {
             return 'alpine'
         }
+    }
+
+    def t() {
+        steps.withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'sym-aws-dev', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
+            steps.sh "set +x; echo 'Logging into docker repo'; `aws --region us-east-1 ecr get-login --no-include-email`"
+            steps.sh 'docker pull 189141687483.dkr.ecr.us-east-1.amazonaws.com/slex-reg-test/debian:buster-slim'
+            steps.sh 'docker run 189141687483.dkr.ecr.us-east-1.amazonaws.com/slex-reg-test/debian:buster-slim cat /etc/os-release'
+         }
     }
 
 }
