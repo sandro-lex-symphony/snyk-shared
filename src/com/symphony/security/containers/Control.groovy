@@ -35,5 +35,6 @@ class Control {
         dockle.run(image)
         snyk.test(image)
     }
+}
 
 
