@@ -22,7 +22,7 @@ class Control {
     }
 
     def init() {
-        withCredentials([string(credentialsId: 'SNYK_API_TOKEN', variable: 'SNYK_TOKEN')]) {
+        steps.withCredentials([steps.string(credentialsId: 'SNYK_API_TOKEN', variable: 'SNYK_TOKEN')]) {
             snyk = new Container(steps, SNYK_TOKEN)
          }
          checkpackages = new CheckPackages(steps)
