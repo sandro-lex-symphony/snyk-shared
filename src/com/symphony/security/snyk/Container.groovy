@@ -11,6 +11,7 @@ class Container {
     def nodejs_version = '14.16.1'
     def initialized = false
     def policy_repo = 'https://github.com/sandro-lex-symphony/docker-images'
+    
     Container(steps, token) {
         this.steps = steps
         this.token = token
