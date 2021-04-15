@@ -26,6 +26,6 @@ class CheckPackages {
 
     def run(image) {
         init()
-        steps.sh "./checkpackages ${image} ${policy_file}"
+        steps.sh (script: "#!/bin/sh -e\n ./checkpackages ${image} ${policy_file}", returnStdout: true)
     }  
 }
