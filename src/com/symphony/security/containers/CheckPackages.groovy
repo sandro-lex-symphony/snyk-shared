@@ -18,8 +18,7 @@ class CheckPackages {
 
     def init() {
         if (!initialized) {
-            steps.echo 'should be quiet'
-            steps.sh (script: "#!/bin/sh -e\n mkdir -p policy && wget -O ${policy_file} ${policy_url}", returnStdout: true)
+            steps.sh (script: "#!/bin/sh -e\n mkdir -p policy && wget -q -O ${policy_file} ${policy_url}", returnStdout: true)
             steps.sh (script: "#!/bin/sh -e\n wget -q -O checkpackages ${checkpackages_bin_url}; chmod +x checkpackages", returnStdout: true)    
         }
         initialized = true
