@@ -19,26 +19,25 @@ class Container {
     def init() {
         if (!initialized) {
             // install nodejs
-            steps.sh "wget https://nodejs.org/dist/v${nodejs_version}/node-v${nodejs_version}-linux-x64.tar.xz && tar -xf node-v${nodejs_version}-linux-x64.tar.xz --directory /usr/local --strip-components 1" 
+            steps.sh (script: "#!/bin/sh -e\n wget -q https://nodejs.org/dist/v${nodejs_version}/node-v${nodejs_version}-linux-x64.tar.xz && tar -xf node-v${nodejs_version}-linux-x64.tar.xz --directory /usr/local --strip-components 1", returnStdout: true) 
             // install snyk
-            steps.sh 'npm install -g snyk'
+            steps.sh (script: "#!/bin/sh -e\n npm install -g snyk", returnStdout: true)
             // sny auth
-            steps.sh "snyk auth ${token}"
+            steps.sh (script: "#!/bin/sh -e\n snyk auth ${token}", returnStdout: true)
+
+            // get policy
+            steps.sh (script: "#!/bin/sh -e\n mkdir -p policy && wget -q -O policy/.snyk https://raw.githubusercontent.com/sandro-lex-symphony/docker-images/master/debian-policy/.snyk", returnStdout: true)
         }
         initialized = true
     }
 
-    def hello(param) {
-        steps.echo 'scan this ' + param
-        steps.sh 'pwd'
-    }
-
     def test(image) {
         init()
-        
-        steps.sh 'mkdir -p policy && wget -O policy/.snyk https://raw.githubusercontent.com/sandro-lex-symphony/docker-images/master/debian-policy/.snyk'
-        steps.sh 'ls -al'
         steps.sh "snyk container test --severity-threshold=high  --policy-path=policy ${image}"
+    }
+
+    def monitor() {
+
     }
 }
 
