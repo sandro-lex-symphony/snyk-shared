@@ -12,7 +12,7 @@ class Dockle {
     private String policy_file = 'policy/dockleignore'
     private String dockle_bin_url = "https://github.com/sandro-lex-symphony/checkpackages/releases/download/v0.1/dockle"
 
-    CheckPackages(steps) {
+    Dockle(steps) {
         this.steps = steps
     }
 
