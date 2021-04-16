@@ -24,7 +24,7 @@ class Container {
             steps.sh (script: "#!/bin/sh -e\n wget -q ${nodejs_url} && tar -xf node-v${nodejs_version}-linux-x64.tar.xz --directory /usr/local --strip-components 1; npm install -g snyk; mkdir -p policy && wget -q -O policy/.snyk ${policy_url}; snyk auth ${token}", returnStdout: true)
         }
         initialized = true
-    }
+        }
 
     def test(image) {
         init()
@@ -35,7 +35,7 @@ class Container {
     def test2(image) {
         steps.sh "mkdir -p policy && wget -q -O policy/.snyk ${policy_url};"
         steps.sh "docker pull snyk/snyk-cli:docker"
-        steps.sh "docker --rm -v /var/run/docker.sock:/var/run/docker.sock -v ${PWD}:/projects -e TOKEN=${token} -e MONITOR=false test --docker ${image}"
+        steps.sh "docker --rm -v /var/run/docker.sock:/var/run/docker.sock -v `pwd`:/projects -e TOKEN=${token} -e MONITOR=false test --docker ${image}"
     }
 
     def monitor() {
