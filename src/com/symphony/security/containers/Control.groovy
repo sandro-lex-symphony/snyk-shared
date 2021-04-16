@@ -22,9 +22,9 @@ class Control {
     }
 
     def init() {
-        steps.withCredentials([steps.string(credentialsId: 'SNYK_API_TOKEN', variable: 'SNYK_TOKEN')]) {
-            snyk = new Container(steps, ${env.SNYK_TOKEN})
-         }
+        // steps.withCredentials([steps.string(credentialsId: 'SNYK_API_TOKEN', variable: 'SNYK_TOKEN')]) {
+        //     snyk = new Container(steps, ${env.SNYK_TOKEN})
+        //  }
          checkpackages = new CheckPackages(steps)
          dockle = new Dockle(steps)
     }
@@ -33,7 +33,7 @@ class Control {
         init()
         checkpackages.run(image)
         dockle.run(image)
-        snyk.test(image)
+        // snyk.test(image)
     }
 }
 
