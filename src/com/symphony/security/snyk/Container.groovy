@@ -10,7 +10,7 @@ class Container {
     def token
     def nodejs_version = '14.16.1'
     def initialized = false
-    def policy_repo = 'https://github.com/sandro-lex-symphony/docker-images'
+    def policy_url = 'https://raw.githubusercontent.com/sandro-lex-symphony/docker-images/master/debian-policy/.snyk'
 
     Container(steps, token) {
         this.steps = steps
@@ -19,15 +19,15 @@ class Container {
 
     def init() {
         if (!initialized) {
-            // install nodejs
-            steps.sh (script: "#!/bin/sh -e\n wget -q https://nodejs.org/dist/v${nodejs_version}/node-v${nodejs_version}-linux-x64.tar.xz && tar -xf node-v${nodejs_version}-linux-x64.tar.xz --directory /usr/local --strip-components 1", returnStdout: true) 
-            // install snyk
-            steps.sh (script: "#!/bin/sh -e\n npm install -g snyk", returnStdout: true)
-            // sny auth
-            steps.sh (script: "#!/bin/sh -e\n snyk auth ${token}", returnStdout: true)
-
-            // get policy
-            steps.sh (script: "#!/bin/sh -e\n mkdir -p policy && wget -q -O policy/.snyk https://raw.githubusercontent.com/sandro-lex-symphony/docker-images/master/debian-policy/.snyk", returnStdout: true)
+            // install nodejs && install snyk && auth snyk && get policy file
+            steps.sh (script: "#!/bin/sh -e\n 
+                wget -q https://nodejs.org/dist/v${nodejs_version}/node-v${nodejs_version}-linux-x64.tar.xz 
+                && tar -xf node-v${nodejs_version}-linux-x64.tar.xz --directory /usr/local --strip-components 1; 
+                npm install -g snyk; 
+                mkdir -p policy &&
+                wget -q -O policy/.snyk ${policy_url}; 
+                snyk auth ${token}"
+                , returnStdout: true) 
         }
         initialized = true
     }
