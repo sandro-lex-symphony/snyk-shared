@@ -26,7 +26,7 @@ class Dockle {
 
     def run(image) {
         init()
-        out = steps.sh (script: "#!/bin/sh -e\n ./dockle --exit-code 0 ${image}", returnStdout: true)
+        def out = steps.sh (script: "#!/bin/sh -e\n ./dockle --exit-code 0 ${image}", returnStdout: true)
         steps.echo out
     }  
 }
