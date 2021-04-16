@@ -29,7 +29,7 @@ class Control {
         steps.echo "#### Start security checks for container image: ${image}"
         steps.echo "## Running container Checkpackages"
         checkpackages.run(image)
-        steps.echo "## Running Dockerfile validation (dokle)"
+        steps.echo "## Running Dockerfile validation (dockle)"
         dockle.run(image)
         steps.echo "## Scanning for vulnerable packages (snyk)"
         snyk.test(image)
