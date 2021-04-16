@@ -18,8 +18,8 @@ class CheckPackages {
 
     def init() {
         if (!initialized) {
-            steps.sh (script: "#!/bin/sh -e\n mkdir -p policy && wget -q -O ${policy_file} ${policy_url}", returnStdout: true)
-            steps.sh (script: "#!/bin/sh -e\n wget -q -O checkpackages ${checkpackages_bin_url}; chmod +x checkpackages", returnStdout: true)    
+            // get policy file and get checkpackage binary file
+            steps.sh (script: "#!/bin/sh -e\n mkdir -p policy && wget -q -O ${policy_file} ${policy_url} && wget -q -O checkpackages ${checkpackages_bin_url}; chmod +x checkpackages", returnStdout: true)    
         }
         initialized = true
     }
