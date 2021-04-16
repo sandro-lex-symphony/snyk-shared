@@ -18,7 +18,6 @@ class Control {
 
     def init() {
         steps.withCredentials([steps.string(credentialsId: 'SNYK_API_TOKEN', variable: 'SNYK_TOKEN')]) {
-            // steps.echo 'XXXX ' + steps.env.SNYK_TOKEN
             snyk = new Container(steps, steps.env.SNYK_TOKEN)
         }
          checkpackages = new CheckPackages(steps)
@@ -27,9 +26,14 @@ class Control {
 
     def run(image) {
         init()
+        steps.echo "#### Start security checks for container image: ${image}"
+        steps.echo "## Running container Checkpackages"
         checkpackages.run(image)
+        steps.echo "## Running Dockerfile validation (dokle)"
         dockle.run(image)
+        steps.echo "## Scanning for vulnerable packages (snyk)"
         snyk.test(image)
+        steps.echo "### End Security Check"
     }
 }
 
