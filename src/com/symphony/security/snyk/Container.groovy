@@ -32,12 +32,6 @@ class Container {
         steps.sh (script: "snyk container test --severity-threshold=high  --policy-path=policy ${image}", returnStdout: true)
     }
 
-    def test2(image) {
-        steps.sh "mkdir -p policy && wget -q -O policy/.snyk ${policy_url};"
-        steps.sh "docker pull snyk/snyk-cli:docker"
-        steps.sh "docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v `pwd`:/project -e SNYK_TOKEN=${token} -e MONITOR=false snyk/snyk-cli:docker test --docker --severity-threshold=high  --policy-path=policy ${image}"
-    }
-
     def monitor() {
 
     }
