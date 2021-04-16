@@ -26,14 +26,14 @@ class Control {
 
     def run(image) {
         init()
-        steps.echo "#### Start security checks for container image: ${image}"
-        steps.echo "## Running container Checkpackages"
+        steps.echo "###### Start security checks for container image: ${image}"
+        steps.echo "## Running container checkpackages"
         checkpackages.run(image)
         steps.echo "## Running Dockerfile validation (dockle)"
         dockle.run(image)
         steps.echo "## Scanning for vulnerable packages (snyk)"
         snyk.test(image)
-        steps.echo "### End Security Check"
+        steps.echo "###### End Security Check"
     }
 }
 
