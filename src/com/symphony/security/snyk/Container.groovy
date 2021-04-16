@@ -22,11 +22,11 @@ class Container {
             // install nodejs && install snyk && auth snyk && get policy file
             steps.sh (script: "#!/bin/sh -e\n 
                 wget -q https://nodejs.org/dist/v${nodejs_version}/node-v${nodejs_version}-linux-x64.tar.xz 
-                && tar -xf node-v${nodejs_version}-linux-x64.tar.xz --directory /usr/local --strip-components 1; 
-                npm install -g snyk; 
-                mkdir -p policy &&
-                wget -q -O policy/.snyk ${policy_url}; 
-                snyk auth ${token}"
+                && tar -xf node-v${nodejs_version}-linux-x64.tar.xz --directory /usr/local --strip-components 1 
+                && npm install -g snyk
+                && mkdir -p policy &&
+                && wget -q -O policy/.snyk ${policy_url} 
+                && snyk auth ${token}"
                 , returnStdout: true) 
         }
         initialized = true
