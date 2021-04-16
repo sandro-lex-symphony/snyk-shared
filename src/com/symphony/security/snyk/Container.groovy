@@ -27,7 +27,8 @@ class Container {
 
     def test(image) {
         init()
-        steps.sh (script: "#!/bin/sh -e\n snyk container test --severity-threshold=high  --policy-path=policy ${image}", returnStdout: true)
+        // steps.sh (script: "#!/bin/sh -e\n snyk container test --severity-threshold=high  --policy-path=policy ${image}", returnStdout: true)
+        steps.sh (script: "snyk container test --severity-threshold=high  --policy-path=policy ${image}", returnStdout: true)
     }
 
     def monitor() {
