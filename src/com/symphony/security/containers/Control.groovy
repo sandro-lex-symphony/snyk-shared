@@ -33,6 +33,7 @@ class Control {
         dockle.run(image)
         steps.echo "## Scanning for vulnerable packages (snyk)"
         snyk.test(image)
+        snyk.monitor(image)
         steps.echo "###### End Security Check"
     }
 }

@@ -11,6 +11,7 @@ class Container {
     def nodejs_version = '14.16.1'
     def nodejs_url = "https://nodejs.org/dist/v${nodejs_version}/node-v${nodejs_version}-linux-x64.tar.xz"
     def initialized = false
+    def testPassed = false
     def policy_url = 'https://raw.githubusercontent.com/sandro-lex-symphony/docker-images/master/debian-policy/.snyk'
 
     Container(steps, token) {
@@ -30,10 +31,11 @@ class Container {
         init()
         // steps.sh (script: "#!/bin/sh -e\n snyk container test --severity-threshold=high  --policy-path=policy ${image}", returnStdout: true)
         steps.sh (script: "snyk container test --severity-threshold=high  --policy-path=policy ${image}", returnStdout: true)
+        testPassed = true
     }
 
-    def monitor() {
-
+    def monitor(image) {
+        steps.sh(script: "snyk container monitor --policy-path=policy ${image}", returnStdout: true)
     }
 }
 
