@@ -17,7 +17,7 @@ class Control {
     }
 
     def init() {
-        steps.withCredentials([steps.string(credentialsId: 'SNYK_API_TOKEN', variable: 'SNYK_TOKEN')]) {
+        steps.withCredentials([steps.usernamePassword(credentialsId: 'SNYK_BASEIMAGE_TOKEN', usernameVariable: 'FILLER', passwordVariable: 'SNYK_TOKEN')]) {
             snyk = new Container(steps, steps.env.SNYK_TOKEN)
         }
          checkpackages = new CheckPackages(steps)
