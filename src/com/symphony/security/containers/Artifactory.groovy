@@ -15,7 +15,7 @@ class Artifactory {
     def init() {
         if (!initialized) {
             steps.withCredentials([steps.usernamePassword(credentialsId: 'artifactory_registry_svc_user', usernameVariable: 'username', passwordVariable: 'password')]) {
-                steps.sh (script: "#!/bin/sh -e\n docker login --username ${env.username} --password ${env.password} ${artifactory_url})", returnStdout: true)
+                steps.sh (script: "#!/bin/sh -e\n docker login --username ${steps.env.username} --password ${steps.env.password} ${artifactory_url})", returnStdout: true)
             }
         }
         initialized = true
