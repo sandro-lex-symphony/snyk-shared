@@ -11,6 +11,7 @@ class Dockle {
     private String policy_url = 'https://raw.githubusercontent.com/sandro-lex-symphony/docker-images/master/packages/blacklist.txt'
     private String policy_file = 'policy/dockleignore'
     private String dockle_bin_url = "https://github.com/sandro-lex-symphony/checkpackages/releases/download/v0.1/dockle"
+    private String conf_base_image = "CIS-DI-0001"
 
     Dockle(steps) {
         this.steps = steps
