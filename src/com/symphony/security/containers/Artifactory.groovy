@@ -8,7 +8,6 @@ class Artifactory {
     private Boolean initialized = false
     private String artifactory_url = "artifact.symphony.com"
    
-
     Artifactory(steps) {
         this.steps = steps
     }
@@ -16,7 +15,8 @@ class Artifactory {
     def init() {
         if (!initialized) {
             steps.withCredentials([steps.usernamePassword(credentialsId: 'container_registry_svc_user', usernameVariable: 'username', passwordVariable: 'password')]) {
-            steps.sh (script: "#!/bin/sh -e\n docker login --username ${username} --password ${password} ${artifactory_url})", returnStdout: true)
+                steps.sh (script: "#!/bin/sh -e\n docker login --username ${username} --password ${password} ${artifactory_url})", returnStdout: true)
+            }
         }
         initialized = true
     }
