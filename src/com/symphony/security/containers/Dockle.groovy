@@ -11,7 +11,7 @@ class Dockle {
     private String policy_url = 'https://raw.githubusercontent.com/sandro-lex-symphony/docker-images/master/packages/blacklist.txt'
     private String policy_file = 'policy/dockleignore'
     private String dockle_bin_url = "https://github.com/sandro-lex-symphony/checkpackages/releases/download/v0.1/dockle"
-    private String conf_base_image = "CIS-DI-0001"
+    private String conf_base_image = "-i DKL-DI-0003 -i CIS-DI-0001  -i CIS-DI-0006"
 
     Dockle(steps) {
         this.steps = steps
@@ -25,9 +25,13 @@ class Dockle {
         initialized = true
     }
 
-    def run(image) {
+    def run(image, ignores) {
         init()
-        def out = steps.sh (script: "#!/bin/sh -e\n ./dockle --exit-code 0 ${image}", returnStdout: true)
+        def out = steps.sh (script: "#!/bin/sh -e\n ./dockle ${conf_base_image} --exit-code 0 ${image} | egrep -v IGNORE", returnStdout: true)
         steps.echo out
     }  
+    
+    def base_image(image) {
+       run(image, conf_base_image) 
+    }
 }

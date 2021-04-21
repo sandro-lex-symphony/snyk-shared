@@ -36,6 +36,19 @@ class Control {
         snyk.monitor(image)
         steps.echo "###### End Security Check"
     }
+
+    def base_image(image) {
+        init()
+        steps.echo "###### Start security checks for base image: ${image}"
+        steps.echo "## Running container checkpackages"
+        checkpackages.run(image)
+        steps.echo "## Running Dockerfile validation (dockle)"
+        dockle.base_image(image)
+        steps.echo "## Scanning for vulnerable packages (snyk)"
+        snyk.test(image)
+        snyk.monitor(image)
+        steps.echo "###### End Security Check"
+    }
 }
 
 
