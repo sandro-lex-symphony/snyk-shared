@@ -26,7 +26,7 @@ class Dockle {
         initialized = true
     }
 
-    def run(image, ignores) {
+    def run(image) {
         init()
         def out = steps.sh (script: "#!/bin/sh -e\n cp policy/dockle_production_image .dockleignore && ./dockle --exit-code 0 ${image} | egrep -v IGNORE", returnStdout: true)
         steps.echo out
