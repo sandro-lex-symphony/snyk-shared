@@ -17,7 +17,7 @@ class Builder {
     }
 
     def setBuildkit(v) {
-        if (v) {
+        if (v == true) {
             buildkit = "DOCKER_BUILDKIT=1"
         } else {
             buildkit = "DOCKER_BUILDKIT=0"
@@ -25,7 +25,7 @@ class Builder {
     }
 
     def setContentTrust(v) {
-        if (v) {
+        if (v == true) {
             content_trust = "DOCKER_CONTENT_TRUST=1"
         } else {
             content_trust = "DOCKER_CONTENT_TRUST=0"
