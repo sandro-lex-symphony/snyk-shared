@@ -1,0 +1,15 @@
+node {
+
+    stage('Hello World') {
+        echo 'hello World'
+        sh 'pwd'
+        sh 'docker --version'
+    }
+
+    stage('Test with Docker') {
+        echo 'test with docker'
+        sh 'docker run --rm -i alpine:3.13 cat /etc/os-release'
+    }
+}
+
+        
