@@ -1,33 +1,59 @@
 @Library('SnykShared@master')                                                                                                           
 import com.symphony.security.containers.Artifactory
 
+// Our initial list of strings we want to echo in parallel
+def stringsToEcho = ["a", "b", "c", "d"]
 
-node {
+// The map we'll store the parallel steps in before executing them.
+def stepsForParallel = stringsToEcho.collectEntries {
+    ["echoing ${it}" : transformIntoStep(it)]
+}
 
-    def snyk_image = 'slex-reg-test/snyk-release:experimental'
-    def artifactory_url = 'artifact.symphony.com'
-    stage('Hello World') {
-        echo 'hello World'
-        sh 'pwd'
-        sh 'docker --version'
+// Actually run the steps in parallel - parallel takes a map as an argument,
+// hence the above.
+parallel stepsForParallel
+
+// Take the string and echo it.
+def transformIntoStep(inputString) {
+    // We need to wrap what we return in a Groovy closure, or else it's invoked
+    // when this method is called, not when we pass it to parallel.
+    // To do this, you need to wrap the code below in { }, and either return
+    // that explicitly, or use { -> } syntax.
+    return {
+        node {
+            echo inputString
+        }
     }
+}
 
-    stage('Test parallel') {
-            parallel (
-                'a': {
-                    sh 'docker run --rm -i alpine:3.13 cat /etc/os-release'
-                    echo 'DONE with Alpine'
-                },
-                'b' : {
-                    sh 'docker run --rm -i busybox /sh/busybox'
-                    echo 'DONE with busybox'
-                },
-                'c': {
-                    sh 'docker run --rm -i ubuntu:20.04 cat /etc/os-release'
-                    echo 'DONE with ubuntu'
-                }
-            )
-    }
+
+
+// node {
+
+//     def snyk_image = 'slex-reg-test/snyk-release:experimental'
+//     def artifactory_url = 'artifact.symphony.com'
+//     stage('Hello World') {
+//         echo 'hello World'
+//         sh 'pwd'
+//         sh 'docker --version'
+//     }
+
+//     stage('Test parallel') {
+//             parallel (
+//                 'a': {
+//                     sh 'docker run --rm -i alpine:3.13 cat /etc/os-release'
+//                     echo 'DONE with Alpine'
+//                 },
+//                 'b' : {
+//                     sh 'docker run --rm -i busybox /sh/busybox'
+//                     echo 'DONE with busybox'
+//                 },
+//                 'c': {
+//                     sh 'docker run --rm -i ubuntu:20.04 cat /etc/os-release'
+//                     echo 'DONE with ubuntu'
+//                 }
+//             )
+//     }
 
     // stage('get stuff') {
     //     artfactory = new Artifactory(this)
