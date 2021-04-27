@@ -12,25 +12,40 @@ node {
         sh 'docker --version'
     }
 
-    stage('Test with Docker') {
-        echo 'test with docker'
-        sh 'docker run --rm -i alpine:3.13 cat /etc/os-release'
-        
+    stage('Test parallel') {
+        parallel {
+            stage('Task one') {
+                steps {
+                    sh 'docker run --rm -i alpine:3.13 cat /etc/os-release'
+                    echo 'DONE with Alpine'
+                }
+            }
+
+            stage('TASK TWO') {
+                sh 'docker run --rm -i busybox /sh/busybox'
+                echo 'DONE with busybox'
+            }
+
+            stage('TASK THREE') {
+                sh 'docker run --rm -i ubuntu:20.04 cat /etc/os-release'
+                echo 'DONE with ubuntu'
+            }
+        }       
     }
 
-    stage('get stuff') {
-        artfactory = new Artifactory(this)
-        artfactory.pull(snyk_image)
+    // stage('get stuff') {
+    //     artfactory = new Artifactory(this)
+    //     artfactory.pull(snyk_image)
 
         
-        withCredentials([usernamePassword(credentialsId: 'githubaccess', usernameVariable: 'git_username', passwordVariable: 'git_password')]) {
-            def params = "-e GIT_USER=${git_username} -e GIT_PASS=${git_password}"
-            params += " -e MVN_PASS='' -e NPM_PASS='' "
-            params += " -e SNYK_SCAN='test' -e SNYK_TOKEN='' -e SNYK_ORG='' -e PRJ_REPO='github.com/SymphonyOSF/SFE-Client-App.git' "
-            params += " -e PRJ=SFE-Client-App -e GIT_HASH=20.12 " 
-            sh "docker run --rm ${params} ${artifactory_url}/${snyk_image} scan_node_prj.sh"
-        }
-    }
+    //     withCredentials([usernamePassword(credentialsId: 'githubaccess', usernameVariable: 'git_username', passwordVariable: 'git_password')]) {
+    //         def params = "-e GIT_USER=${git_username} -e GIT_PASS=${git_password}"
+    //         params += " -e MVN_PASS='' -e NPM_PASS='' "
+    //         params += " -e SNYK_SCAN='test' -e SNYK_TOKEN='' -e SNYK_ORG='' -e PRJ_REPO='github.com/SymphonyOSF/SFE-Client-App.git' "
+    //         params += " -e PRJ=SFE-Client-App -e GIT_HASH=20.12 " 
+    //         sh "docker run --rm ${params} ${artifactory_url}/${snyk_image} scan_node_prj.sh"
+    //     }
+    // }
 }
 
         
