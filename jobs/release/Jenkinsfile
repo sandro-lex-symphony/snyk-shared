@@ -23,7 +23,7 @@ node {
         artfactory.pull(snyk_image)
 
         
-        withCredentials([susernamePassword(credentialsId: 'githubaccess', usernameVariable: 'git_username', passwordVariable: 'git_password')]) {
+        withCredentials([usernamePassword(credentialsId: 'githubaccess', usernameVariable: 'git_username', passwordVariable: 'git_password')]) {
             def params = "-e GIT_USER=${git_username} -e GIT_PASS=${git_password}"
             params += " -e MVN_PASS='' -e NPM_PASS='' "
             params += " -e SNYK_SCAN='test' -e SNYK_TOKEN='' -e SNYK_ORG='' -e PRJ_REPO='github.com/SymphonyOSF/SFE-Client-App.git' "
