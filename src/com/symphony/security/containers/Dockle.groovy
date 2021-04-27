@@ -34,6 +34,8 @@ class Dockle {
     
     def base_image(image) {
         init()
+        def out = steps.sh (script: "ls -al policy/", returnStdout: true)
+        steps.echo out
         steps.sh (script: "#!/bin/sh -e\n cp policy/dockle_base_image ${policy_file} && ./dockle --exit-code 0 ${image} ", returnStdout: true)
     }
 }
