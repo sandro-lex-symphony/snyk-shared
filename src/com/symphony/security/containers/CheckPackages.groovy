@@ -8,7 +8,7 @@ class CheckPackages {
     
     private def steps
     private Boolean initialized = false
-    private String policy_url = 'https://raw.githubusercontent.com/sandro-lex-symphony/docker-images/master/packages/blacklist.txt'
+    private String policy_url = 'https://raw.githubusercontent.com/sandro-lex-symphony/docker-images/master/policies/packages/debian-blacklist.txt'
     private String policy_file = 'policy/blacklist.txt'
     private String checkpackages_bin_url = "https://github.com/sandro-lex-symphony/checkpackages/releases/download/v0.1/checkpackages"
 

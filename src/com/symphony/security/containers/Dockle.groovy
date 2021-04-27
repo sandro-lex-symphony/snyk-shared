@@ -8,8 +8,8 @@ class Dockle {
     
     private def steps
     private Boolean initialized = false
-    private String base_image_policy_url = 'https://raw.githubusercontent.com/sandro-lex-symphony/docker-images/master/debian-policy/dockle-base_image'
-    private String production_image_policy_url = 'https://raw.githubusercontent.com/sandro-lex-symphony/docker-images/master/debian-policy/dockle-production_image'
+    private String base_image_policy_url = 'https://raw.githubusercontent.com/sandro-lex-symphony/docker-images/master/policies/dockle/debian-dockle-base-image'
+    private String production_image_policy_url = 'https://raw.githubusercontent.com/sandro-lex-symphony/docker-images/master/policies/dockle/debian-dockle-production_image'
     private String policy_file = '.dockleignore'
     private String dockle_bin_url = "https://github.com/sandro-lex-symphony/checkpackages/releases/download/v0.1/dockle"
     private String conf_base_image = "-i DKL-DI-0003 -i CIS-DI-0001  -i CIS-DI-0006 -i CIS-DI-0005"

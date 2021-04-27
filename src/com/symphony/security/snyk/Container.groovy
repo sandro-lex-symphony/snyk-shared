@@ -12,7 +12,7 @@ class Container {
     def nodejs_url = "https://nodejs.org/dist/v${nodejs_version}/node-v${nodejs_version}-linux-x64.tar.xz"
     def initialized = false
     def testPassed = false
-    def policy_url = 'https://raw.githubusercontent.com/sandro-lex-symphony/docker-images/master/debian-policy/.snyk'
+    def policy_url = 'https://raw.githubusercontent.com/sandro-lex-symphony/docker-images/master/policies/snyk/debian-snyk'
 
     Container(steps, token) {
         this.steps = steps
