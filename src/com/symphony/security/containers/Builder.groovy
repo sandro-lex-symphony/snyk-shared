@@ -16,7 +16,7 @@ class Builder {
         this.steps = steps
     }
 
-    def setBuildkit(v) {
+    def buildkit(v) {
         if (v == true) {
             buildkit = "DOCKER_BUILDKIT=1"
         } else {
@@ -24,7 +24,7 @@ class Builder {
         }
     }
 
-    def setContentTrust(v) {
+    def contentTrust(v) {
         if (v == true) {
             content_trust = "DOCKER_CONTENT_TRUST=1"
         } else {
