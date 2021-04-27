@@ -28,6 +28,7 @@ class Artifactory {
     }
 
     def pull(image) {
+        init()
         steps.sh (script: "#!/bin/sh -e\n docker pull ${artifactory_url}/${image}")
     }
 }
