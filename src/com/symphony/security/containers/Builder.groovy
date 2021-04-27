@@ -16,7 +16,7 @@ class Builder {
 
     def buildAndPublish(image_name, dockerfile, context_path) {
         // docker build
-        steps.echo "### Building container image ${image}"
+        steps.echo "### Building container image ${image_name}"
         steps.sh (script: "DOCKER_BUILDKIT=1 DOCKER_CONTENT_TRUST=1 docker build --no-cache -f ${dockerfile} -t ${image_name} ${context_path}", returnStdout: true)
 
         // security checks
