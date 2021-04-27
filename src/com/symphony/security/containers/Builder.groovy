@@ -35,7 +35,7 @@ class Builder {
     def buildAndPublish(image_name, dockerfile, context_path) {
         // docker build
         steps.echo "### Building container image ${image_name}"
-        steps.sh (script: "${buildkit} ${content_trust} docker build --progress plain --no-cache -f ${dockerfile} -t ${image_name} ${context_path}", returnStdout: true)
+        steps.sh (script: "${this.buildkit} ${this.content_trust} docker build --progress plain --no-cache -f ${dockerfile} -t ${image_name} ${context_path}", returnStdout: true)
 
         // security checks
         def security = new Control(this)
