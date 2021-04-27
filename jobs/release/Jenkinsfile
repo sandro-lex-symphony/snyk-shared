@@ -2,7 +2,7 @@
 import com.symphony.security.containers.Artifactory
 
 // Our initial list of strings we want to echo in parallel
-def stringsToEcho = ["a", "b", "c", "d"]
+def stringsToEcho = ["cat /etc/os-release", "cat /etc/passwd", "ls /var"]
 
 // The map we'll store the parallel steps in before executing them.
 def stepsForParallel = stringsToEcho.collectEntries {
@@ -22,6 +22,7 @@ def transformIntoStep(inputString) {
     return {
         node {
             echo inputString
+            sh "docker run --rm -i alpine:3.13 ${inputString}"
         }
     }
 }
