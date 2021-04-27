@@ -42,7 +42,7 @@ class Builder {
         steps.echo "### GOING SECURITY"
         def security = new Control(this)
         security.base_image(image_name
-        steps.echo "### END SECURITY")
+        steps.echo "### END SECURITY"
 
         // push to repo
         steps.echo "### GOING ARTIFACTORY"
