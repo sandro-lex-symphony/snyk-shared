@@ -22,7 +22,14 @@ node {
         artfactory = new Artifactory(this)
         artfactory.pull(snyk_image)
 
-        sh "docker run --rm -i ${artifactory_url}/${snyk_image} cat /etc/os-release"
+        
+        withCredentials([susernamePassword(credentialsId: 'githubaccess', usernameVariable: 'git_username', passwordVariable: 'git_password')]) {
+            def params = "-e GIT_USER=${git_username} -e GIT_PASS=${git_password}"
+            params += " -e MVN_PASS='' -e NPM_PASS='' "
+            params += " -e SNYK_SCAN='test' -e SNYK_TOKEN='' -e SNYK_ORG='' -e PRJ_REPO='github.com/SymphonyOSF/SFE-Client-App.git' "
+            params += " -e PRJ=SFE-Client-App -e GIT_HASH=20.12 " 
+            sh "docker run --rm ${params} ${artifactory_url}/${snyk_image} scan_node_prj.sh"
+        }
     }
 }
 
