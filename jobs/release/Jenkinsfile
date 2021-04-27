@@ -68,6 +68,6 @@ def transformIntoStep(inputString) {
     //         sh "docker run --rm ${params} ${artifactory_url}/${snyk_image} scan_node_prj.sh"
     //     }
     // }
-}
+// }
 
         
