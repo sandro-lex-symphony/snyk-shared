@@ -26,5 +26,9 @@ class Artifactory {
         steps.sh (script: "#!/bin/sh -e\n docker tag ${image_local} ${artifactory_url}/${image_repository}", returnStdout: true)
         steps.sh (script: "#!/bin/sh -e\n docker push ${artifactory_url}/${image_repository}", returnStdout: true)
     }
+
+    def pull(image) {
+        steps.sh (script: "#!/bin/sh -e\n docker pull ${image}")
+    }
 }
 
