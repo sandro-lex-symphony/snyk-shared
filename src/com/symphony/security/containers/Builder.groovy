@@ -41,7 +41,7 @@ class Builder {
         // security checks
         steps.echo "### GOING SECURITY"
         def security = new Control(this)
-        security.base_image(image_name
+        security.base_image(image_name)
         steps.echo "### END SECURITY"
 
         // push to repo
