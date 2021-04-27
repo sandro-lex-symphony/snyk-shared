@@ -13,7 +13,6 @@ node {
     }
 
     stage('Test parallel') {
-        steps {
             parallel (
                 'a': {
                     sh 'docker run --rm -i alpine:3.13 cat /etc/os-release'
@@ -28,7 +27,6 @@ node {
                     echo 'DONE with ubuntu'
                 }
             )
-        }
     }
 
     // stage('get stuff') {
