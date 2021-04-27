@@ -27,3 +27,4 @@ class Builder {
         def artifactory = new Artifactory(this)
         artifactory.push(image_name, artifactory_repo + image_name)
     }
+}
