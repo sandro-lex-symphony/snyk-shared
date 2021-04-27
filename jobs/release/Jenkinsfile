@@ -13,29 +13,22 @@ node {
     }
 
     stage('Test parallel') {
-        parallel (
-            'a': {
-                steps {
+        steps {
+            parallel (
+                'a': {
                     sh 'docker run --rm -i alpine:3.13 cat /etc/os-release'
                     echo 'DONE with Alpine'
-                }
-            },
-            
-
-            'b' : {
-                steps {
+                },
+                'b' : {
                     sh 'docker run --rm -i busybox /sh/busybox'
                     echo 'DONE with busybox'
-                }
-            },
-
-            'c': {
-                steps {
+                },
+                'c': {
                     sh 'docker run --rm -i ubuntu:20.04 cat /etc/os-release'
                     echo 'DONE with ubuntu'
                 }
-            }
-        )       
+            )
+        }
     }
 
     // stage('get stuff') {
