@@ -36,12 +36,16 @@ class Builder {
         // docker build
         steps.echo "### Building container image ${image_name}"
         steps.sh (script: "${this.buildkit} ${this.content_trust} docker build --progress plain --no-cache -f ${dockerfile} -t ${image_name} ${context_path}", returnStdout: true)
+        steps.echo "### finished building"
 
         // security checks
+        steps.echo "### GOING SECURITY"
         def security = new Control(this)
-        security.base_image(image_name)
+        security.base_image(image_name
+        steps.echo "### END SECURITY")
 
         // push to repo
+        steps.echo "### GOING ARTIFACTORY"
         def artifactory = new Artifactory(this)
         artifactory.push(image_name, artifactory_repo + image_name)
     }
