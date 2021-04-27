@@ -14,7 +14,7 @@ class Builder {
         this.steps = steps
     }
 
-    def build(image_name, dockerfile, context_path) {
+    def buildAndPublish(image_name, dockerfile, context_path) {
         // docker build
         steps.echo "### Building container image ${image}"
         steps.sh (script: "DOCKER_BUILDKIT=1 DOCKER_CONTENT_TRUST=1 docker build --no-cache -f ${dockerfile} -t ${image_name} ${context_path}", returnStdout: true)
