@@ -19,7 +19,7 @@ node {
                     sh 'docker run --rm -i alpine:3.13 cat /etc/os-release'
                     echo 'DONE with Alpine'
                 }
-            }
+            },
             
 
             'b' : {
@@ -27,7 +27,7 @@ node {
                     sh 'docker run --rm -i busybox /sh/busybox'
                     echo 'DONE with busybox'
                 }
-            }
+            },
 
             'c': {
                 steps {
