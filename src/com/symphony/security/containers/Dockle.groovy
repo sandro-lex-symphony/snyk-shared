@@ -38,7 +38,7 @@ class Dockle {
         init()
         def out = steps.sh (script: "cp policy/dockle_base_image ${policy_file}", returnStdout: true)
         steps.echo out
-        def out2 = steps.sh (script: "./dockle --exit-code 0 ${image} | egrep -v IGNORE ", returnStdout: true)
+        def out2 = steps.sh (script: "./dockle --exit-code 0 ${image} | grep -v IGNORE", returnStdout: true)
         steps.echo out2
     }
 }
