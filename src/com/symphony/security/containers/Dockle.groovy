@@ -20,10 +20,8 @@ class Dockle {
 
     def init() {
         if (!initialized) {
-            def out1 = steps.sh (script: "mkdir -p policy && wget -q -O policy/dockle_base_image ${base_image_policy_url} && wget -q -O policy/dockle_production_image ${production_image_policy_url}", returnStdout: true)
-            steps.echo out1
-            def out2 = steps.sh (script: " wget -q -O dockle ${dockle_bin_url}; chmod +x dockle", returnStdout: true)    
-            steps.echo out2
+            steps.sh (script: "#!/bin/sh -e\n mkdir -p policy && wget -q -O policy/dockle_base_image ${base_image_policy_url} && wget -q -O policy/dockle_production_image ${production_image_policy_url}", returnStdout: true)
+            steps.sh (script: "#!/bin/sh -e\n wget -q -O dockle ${dockle_bin_url}; chmod +x dockle", returnStdout: true)
         }
         initialized = true
     }
@@ -36,9 +34,6 @@ class Dockle {
     
     def base_image(image) {
         init()
-        def out = steps.sh (script: "cp policy/dockle_base_image ${policy_file}", returnStdout: true)
-        steps.echo out
-        def out2 = steps.sh (script: "./dockle --exit-code 0 ${image} | grep -v IGNORE", returnStdout: false)
-        steps.echo out2
+        steps.sh (script: "#!/bin/sh cp policy/dockle_base_image ${policy_file} && ./dockle --exit-code 0 ${image} ", returnStdout: false)
     }
 }
