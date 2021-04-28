@@ -24,7 +24,7 @@ class Control {
          dockle = new Dockle(steps)
     }
 
-    def run(image) {
+    def run(image, dockerfile='') {
         init()
         steps.echo "###### Start security checks for container image: ${image}"
         steps.echo "## Running container checkpackages"
@@ -32,12 +32,12 @@ class Control {
         steps.echo "## Running Dockerfile validation (dockle)"
         dockle.run(image)
         steps.echo "## Scanning for vulnerable packages (snyk)"
-        snyk.test(image)
+        snyk.test(image, dockerfile)
         snyk.monitor(image)
         steps.echo "###### End Security Check"
     }
 
-    def base_image(image) {
+    def base_image(image, dockerfile='') {
         init()
         steps.echo "###### Start security checks for base image: ${image}"
         steps.echo "## Running container checkpackages"
@@ -45,7 +45,7 @@ class Control {
         steps.echo "## Running Dockerfile validation (dockle)"
         dockle.base_image(image)
         steps.echo "## Scanning for vulnerable packages (snyk)"
-        snyk.test(image)
+        snyk.test(image, dockerfile)
         snyk.monitor(image)
         steps.echo "###### End Security Check"
     }
