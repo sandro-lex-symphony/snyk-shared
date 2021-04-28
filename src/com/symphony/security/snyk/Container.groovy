@@ -27,10 +27,14 @@ class Container {
         initialized = true
         }
 
-    def test(image) {
+    def test(image, dockerfile='') {
         init()
+        def file_args = ''
+        if !dockerfile.isEmpty() {
+            file_args = " --file=${dockerfile}"
+        }
         // steps.sh (script: "#!/bin/sh -e\n snyk container test --severity-threshold=high  --policy-path=policy ${image}", returnStdout: true)
-        steps.sh (script: "snyk container test --severity-threshold=high  --policy-path=policy ${image}", returnStdout: true)
+        steps.sh (script: "snyk container test ${file_args} --severity-threshold=high  --policy-path=policy ${image}", returnStdout: true)
         testPassed = true
     }
 
