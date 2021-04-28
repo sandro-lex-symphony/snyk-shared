@@ -46,13 +46,13 @@ class Builder {
 
         // security checks
         steps.echo "### SECURITY CHECKS"
-        def security = new Control(steps)
+        def security = new Control(this.steps)
         security.base_image(image_name)
         steps.echo "### END SECURITY"
 
         // push to repo
         steps.echo "### GOING ARTIFACTORY"
-        def artifactory = new Artifactory(steps)
+        def artifactory = new Artifactory(this.steps)
         artifactory.push(image_name, artifactory_repo + image_name)
     }
 }
