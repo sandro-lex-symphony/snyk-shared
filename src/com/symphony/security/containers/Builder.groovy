@@ -11,6 +11,7 @@ class Builder {
     def artifactory_repo = 'slex-reg-test/'
     def buildkit = "DOCKER_BUILDKIT=1"
     def content_trust = "DOCKER_CONTENT_TRUST=1"
+    def flags = ''
     
     Builder(steps) {
         this.steps = steps
@@ -32,16 +33,20 @@ class Builder {
         }
     }
 
+    def flags(v) {
+        flags = = v
+    }
+
     def dockerBuild(image_name, dockerfile, context_path) {
         steps.echo "### Building container image ${image_name}"
-        steps.sh (script: "${this.buildkit} ${this.content_trust} docker build --no-cache --pull -f ${dockerfile} -t ${image_name} ${context_path}", returnStdout: true)
+        steps.sh (script: "${this.buildkit} ${this.content_trust} docker build --no-cache --pull ${flags} -f ${dockerfile} -t ${image_name} ${context_path}", returnStdout: true)
         steps.echo "### finished building"
     }
 
     def buildAndPublish(image_name, dockerfile, context_path) {
         // docker build
         steps.echo "### Building container image ${image_name}"
-        steps.sh (script: "${this.buildkit} ${this.content_trust} docker build --progress plain --no-cache -f ${dockerfile} -t ${image_name} ${context_path}", returnStdout: true)
+        steps.sh (script: "${this.buildkit} ${this.content_trust} docker build ${flags} --no-cache -f ${dockerfile} -t ${image_name} ${context_path}", returnStdout: true)
         steps.echo "### finished building"
 
         // security checks
