@@ -10,6 +10,7 @@ class Control {
     def snyk
     def dockle
     def checkpackages
+    def snyk_org = '0d7aca92-9445-4f4b-af39-ec3839023c03'
     
 
     Control(steps) {
@@ -33,7 +34,7 @@ class Control {
         dockle.run(image)
         steps.echo "## Scanning for vulnerable packages (snyk)"
         snyk.test(image, dockerfile)
-        snyk.monitor(image)
+        snyk.monitor(image, snyk_org)
         steps.echo "###### End Security Check"
     }
 
@@ -46,7 +47,7 @@ class Control {
         dockle.base_image(image)
         steps.echo "## Scanning for vulnerable packages (snyk)"
         snyk.test(image, dockerfile)
-        snyk.monitor(image)
+        snyk.monitor(image, snyk_org)
         steps.echo "###### End Security Check"
     }
 }
