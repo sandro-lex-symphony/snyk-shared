@@ -32,6 +32,12 @@ class Builder {
         }
     }
 
+    def dockerBuild(image_name, dockerfile, context_path) {
+        steps.echo "### Building container image ${image_name}"
+        steps.sh (script: "${this.buildkit} ${this.content_trust} docker build --no-cache --pull -f ${dockerfile} -t ${image_name} ${context_path}", returnStdout: true)
+        steps.echo "### finished building"
+    }
+
     def buildAndPublish(image_name, dockerfile, context_path) {
         // docker build
         steps.echo "### Building container image ${image_name}"
@@ -39,7 +45,7 @@ class Builder {
         steps.echo "### finished building"
 
         // security checks
-        steps.echo "### GOING SECURITY"
+        steps.echo "### SECURITY CHECKS"
         def security = new Control(this)
         security.base_image(image_name)
         steps.echo "### END SECURITY"
