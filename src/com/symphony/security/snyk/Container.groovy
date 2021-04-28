@@ -37,8 +37,12 @@ class Container {
         testPassed = true
     }
 
-    def monitor(image) {
-        steps.sh(script: "snyk container monitor --policy-path=policy ${image}", returnStdout: true)
+    def monitor(image, org='') {
+        def org_arg = ''
+        if (!org.isEmpty()) {
+            org_arg=" --org=${org} "
+        }
+        steps.sh(script: "snyk container monitor ${org_arg} --policy-path=policy ${image}", returnStdout: true)
     }
 }
 
