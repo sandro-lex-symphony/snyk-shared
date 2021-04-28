@@ -34,7 +34,7 @@ class Builder {
     }
 
     def flags(v) {
-        flags = = v
+        flags = v
     }
 
     def dockerBuild(image_name, dockerfile, context_path) {
