@@ -9,7 +9,8 @@ import com.symphony.security.containers.Artifactory
 class Builder {
     def steps
     def artifactory_repo = 'slex-reg-test/'
-    def buildkit = "DOCKER_BUILDKIT=1"
+    def buildkit = true
+    def buildkit_string = "DOCKER_BUILDKIT=1"
     def content_trust = "DOCKER_CONTENT_TRUST=1"
     def flags = ''
     def cache_args = '--no-cache'
@@ -21,17 +22,19 @@ class Builder {
 
     def buildkit(v) {
         if (v == true) {
-            buildkit = "DOCKER_BUILDKIT=1"
+            buildkit = true
+            buildkit_string = "DOCKER_BUILDKIT=1"
         } else {
-            buildkit = "DOCKER_BUILDKIT=0"
+            buildkit = false
+            buildkit_string = "DOCKER_BUILDKIT=0"
         }
     }
 
     def contentTrust(v) {
         if (v == true) {
-            content_trust = "DOCKER_CONTENT_TRUST=1"
+            content_trust_string = "DOCKER_CONTENT_TRUST=1"
         } else {
-            content_trust = "DOCKER_CONTENT_TRUST=0"
+            content_trust_string = "DOCKER_CONTENT_TRUST=0"
         }
     }
 
@@ -55,9 +58,22 @@ class Builder {
         flags = v
     }
 
+    // because of an incompatibility with buildkit and contained (docker < 20.x)
+    // if the image is not on local cache, docker build fails
+    // if we pull the image first, it works
+    def pullRootImage(dockerfile) {
+        // get the roor image name from dockerfile and docker pull
+        def rootimage = steps.sh(script: "awk -F' ' '/^FROM/ { print $2 }' ${dockerfile}", returnStdout: true)
+        steps.sh(script: "${content_trust} docker pull ${rootimage}", returnStdout: true)
+    }
+
     def dockerBuild(image_name, dockerfile, context_path) {
         steps.echo "### Building container image ${image_name}"
-        steps.sh (script: "${this.buildkit} ${this.content_trust} docker build ${cache_args} ${pull_args} ${flags} -f ${dockerfile} -t ${image_name} ${context_path}", returnStdout: true)
+        if (buildkit == true) {
+            pullArg(false)
+            pullRootImage(dockerfile)
+        }
+        steps.sh (script: "${buildkit_string} ${content_trust_string} docker build ${cache_args} ${pull_args} ${flags} -f ${dockerfile} -t ${image_name} ${context_path}", returnStdout: true)
         steps.echo "### Done building ${image_name}"
     }
 
