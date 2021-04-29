@@ -18,9 +18,14 @@ class Builder {
     
     Builder(steps, contentTrustValue=true, buildkitValue=true) {
         this.steps = steps
-        this.buildkit(buildkitValue)
-        this.contentTrust(contentTrustValue)
-        // this.contentTrust = contentTrust
+        this.buildkit = buildkitValue
+        this.contentTrust = contentTrustValue
+    }
+
+    // I don't understand why can't it be called from the constructor? 
+    def init() {
+        buildkit(this.buildkit)
+        contentTrust(this.contentTrust)
     }
 
     def buildkit(v) {
@@ -73,6 +78,7 @@ class Builder {
     }
 
     def dockerBuild(image_name, dockerfile, context_path) {
+        init()
         steps.echo "### Building container image ${image_name}"
         if (buildkit == true) {
             pullArg(false)
