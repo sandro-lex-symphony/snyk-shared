@@ -1,7 +1,7 @@
 package com.symphony.security.containers
 
  @Library('SnykShared@master')                                                                                                                                                                    
-import com.symphony.security.containers.Control
+import com.symphony.security.containers.SecurityControl
 import com.symphony.security.containers.Artifactory
 
 
@@ -94,7 +94,7 @@ class Builder {
 
         // security checks
         steps.echo "### Running Security Checks for ${image_name}"
-        def security = new Control(this.steps)
+        def security = new SecurityControl(this.steps)
         security.base_image(image_name, dockerfile)
         steps.echo "### Done security checks for ${image_name}"
 

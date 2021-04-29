@@ -5,7 +5,7 @@ import com.symphony.security.containers.CheckPackages
 import com.symphony.security.containers.Dockle
 import com.symphony.security.snyk.Container
 
-class Control {
+class SecurityControl {
     def steps
     def snyk
     def dockle
@@ -13,7 +13,7 @@ class Control {
     def snyk_org = '0d7aca92-9445-4f4b-af39-ec3839023c03'
     
 
-    Control(steps) {
+    SecurityControl(steps) {
         this.steps = steps
     }
 
