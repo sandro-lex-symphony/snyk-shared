@@ -16,10 +16,11 @@ class Builder {
     def cache_args = '--no-cache'
     def pull_args = '--pull'
     
-    Builder(steps, contentTrust=true, buildkit=true) {
+    Builder(steps, contentTrustValue=true, buildkitValue=true) {
         this.steps = steps
-        this.buildkit = buildkit
-        this.contentTrust = contentTrust
+        this.buildkit(buildkitValue)
+        this.contentTrust(contentTrustValue)
+        // this.contentTrust = contentTrust
     }
 
     def buildkit(v) {
