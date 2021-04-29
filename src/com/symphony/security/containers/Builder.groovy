@@ -64,7 +64,7 @@ class Builder {
     def pullRootImage(dockerfile) {
         // get the roor image name from dockerfile and docker pull
         def rootimage = steps.sh(script: "awk -F' ' '/^FROM/ { print \$2 }' ${dockerfile}", returnStdout: true)
-        steps.sh(script: "${content_trust} docker pull ${rootimage}", returnStdout: true)
+        steps.sh(script: "${content_trust_str} docker pull ${rootimage}", returnStdout: true)
     }
 
     def dockerBuild(image_name, dockerfile, context_path) {
