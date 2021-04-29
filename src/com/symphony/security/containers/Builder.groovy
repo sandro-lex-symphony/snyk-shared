@@ -10,13 +10,16 @@ class Builder {
     def steps
     def buildkit = true
     def buildkit_str= "DOCKER_BUILDKIT=1"
+    def contentTrust = true
     def content_trust_str = "DOCKER_CONTENT_TRUST=1"
     def flags = ''
     def cache_args = '--no-cache'
     def pull_args = '--pull'
     
-    Builder(steps) {
+    Builder(steps, contentTrust=true, buildkit=true) {
         this.steps = steps
+        this.buildkit = buildkit
+        this.contentTrust = contentTrust
     }
 
     def buildkit(v) {
@@ -31,8 +34,10 @@ class Builder {
 
     def contentTrust(v) {
         if (v == true) {
+            contentTrust = true
             content_trust_str = "DOCKER_CONTENT_TRUST=1"
         } else {
+            contentTrust  = false
             content_trust_str = "DOCKER_CONTENT_TRUST=0"
         }
     }
