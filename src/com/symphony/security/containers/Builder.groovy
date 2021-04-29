@@ -8,7 +8,6 @@ import com.symphony.security.containers.Artifactory
 
 class Builder {
     def steps
-    def artifactory_repo = 'slex-reg-test/'
     def buildkit = true
     def buildkit_str= "DOCKER_BUILDKIT=1"
     def content_trust_str = "DOCKER_CONTENT_TRUST=1"
@@ -77,7 +76,7 @@ class Builder {
         steps.echo "### Done building ${image_name}"
     }
 
-    def buildAndPublish(image_name, dockerfile, context_path) {
+    def buildAndPublish(image_name, dockerfile, context_path, artifactory_repository='') {
         // docker build
         dockerBuild(image_name, dockerfile, context_path)
 
@@ -88,9 +87,9 @@ class Builder {
         steps.echo "### Done security checks for ${image_name}"
 
         // push to repo
-        steps.echo "### Going to push ${image_name} to Artifactory"
+        steps.echo "### Going to push ${image_name} to Artifactory ${artifactory_repository}"
         def artifactory = new Artifactory(this.steps)
-        artifactory.push(image_name, artifactory_repo + image_name)
-        steps.echo "### Done pushing ${image_name} to Artifactory"
+        artifactory.push(image_name, artifactory_repository)
+        steps.echo "### Done pushing ${image_name} to Artifactory ${artifactory_repository}"
     }
 }
