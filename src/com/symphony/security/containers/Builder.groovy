@@ -10,8 +10,8 @@ class Builder {
     def steps
     def artifactory_repo = 'slex-reg-test/'
     def buildkit = true
-    def buildkit_string = "DOCKER_BUILDKIT=1"
-    def content_trust = "DOCKER_CONTENT_TRUST=1"
+    def buildkit_str= "DOCKER_BUILDKIT=1"
+    def content_trust_str = "DOCKER_CONTENT_TRUST=1"
     def flags = ''
     def cache_args = '--no-cache'
     def pull_args = '--pull'
@@ -23,18 +23,18 @@ class Builder {
     def buildkit(v) {
         if (v == true) {
             buildkit = true
-            buildkit_string = "DOCKER_BUILDKIT=1"
+            buildkit_str = "DOCKER_BUILDKIT=1"
         } else {
             buildkit = false
-            buildkit_string = "DOCKER_BUILDKIT=0"
+            buildkit_str = "DOCKER_BUILDKIT=0"
         }
     }
 
     def contentTrust(v) {
         if (v == true) {
-            content_trust_string = "DOCKER_CONTENT_TRUST=1"
+            content_trust_str = "DOCKER_CONTENT_TRUST=1"
         } else {
-            content_trust_string = "DOCKER_CONTENT_TRUST=0"
+            content_trust_str = "DOCKER_CONTENT_TRUST=0"
         }
     }
 
@@ -73,7 +73,7 @@ class Builder {
             pullArg(false)
             pullRootImage(dockerfile)
         }
-        steps.sh (script: "${buildkit_string} ${content_trust_string} docker build ${cache_args} ${pull_args} ${flags} -f ${dockerfile} -t ${image_name} ${context_path}", returnStdout: true)
+        steps.sh (script: "${buildkit_str} ${content_trust_str} docker build ${cache_args} ${pull_args} ${flags} -f ${dockerfile} -t ${image_name} ${context_path}", returnStdout: true)
         steps.echo "### Done building ${image_name}"
     }
 
