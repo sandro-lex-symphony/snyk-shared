@@ -42,8 +42,21 @@ node {
         artfactory.pull(snyk_image)
     }
     stage('test one job at time') {
-        echo "HELLO ${params.VAR1}"
-        sh "docker run --rm -i ${artifactory_url}/${snyk_image} cat /etc/os-release"
+         withCredentials([usernamePassword(credentialsId: 'githubaccess', usernameVariable: 'git_username', passwordVariable: 'git_password')]) {
+            def xxx = "-e GIT_USER=${git_username} -e GIT_PASS=${git_password}"
+            // git_user = ''
+            // git_pass = ''
+            mvn_pass = ''
+            npm_pass = ''
+            snyk_token = 'abc'
+            snyk_org = '123'
+            prj_repo = 'github.com/SymphonyOSF/SFE-Client-App.git'
+            prj = 'SFE-Client-App'
+            git_hash = '20.12'
+            snyk_scan = 'test'
+            echo "HELLO ${params.VAR1}"
+            sh "docker run --rm -e ${xxx} -e MVN_PASS=${mvn_pass} -e NPM_PASS=${npm_pass} -e SNYK_TOKEN=${snyk_token} -e SNYK_ORG=${snyk_org} -e PRJ_REPO=${prj_repo} -e PRJ=${prj} -e GIT_HASH=${git_hash} -e SNYK_SCAN=${snyk_scan} ${artifactory_url}/${snyk_image} cat /etc/os-release"
+        }
     }
 }
 
