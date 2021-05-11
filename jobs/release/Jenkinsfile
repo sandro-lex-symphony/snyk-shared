@@ -28,6 +28,9 @@ import com.symphony.security.containers.Artifactory
 // }
 
 node {
+    parameters {
+        string(name: 'VAR1', defaultValue: 'grouk', description: 'filler')
+    }
     def snyk_image = 'slex-reg-test/snyk-release:experimental'
     def artifactory_url = 'artifact.symphony.com'
     stage('Pre') {
@@ -35,6 +38,7 @@ node {
         artfactory.pull(snyk_image)
     }
     stage('test one job at time') {
+        echo "HELLO ${params.VAR1}"
         sh "docker run --rm -i ${artifactory_url}/${snyk_image} cat /etc/os-release"
     }
 }
