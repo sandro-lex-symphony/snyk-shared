@@ -42,7 +42,7 @@ node {
         artfactory.pull(snyk_image)
     }
     stage('test one job at time') {
-         withCredentials([usernamePassword(credentialsId: '0b7ef3d9-9304-4f37-a134-dc028fc121c4', usernameVariable: 'git_username', passwordVariable: 'git_password')]) {
+         withCredentials([usernamePassword(credentialsId: 'b727f90a-0844-41d8-933b-a9801398bddc', usernameVariable: 'git_username', passwordVariable: 'git_password')]) {
             def xxx = "-e GIT_USER=\"${git_username}\" -e GIT_PASS=\"${git_password}\""
             // git_user = ''
             // git_pass = ''
