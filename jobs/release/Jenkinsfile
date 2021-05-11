@@ -46,8 +46,8 @@ node {
         withCredentials([usernamePassword(credentialsId: 'b727f90a-0844-41d8-933b-a9801398bddc', usernameVariable: 'git_username', passwordVariable: 'git_password')]) {
             xxx = " -e GIT_USER=\"${git_username}\" -e GIT_PASS=\"${git_password}\" "
         }
-        withCredentials([usernamePassword(credentialsId: 'artifactory-jenkins-user', passwordVariable: 'artifactory_password', usernameVariable: 'artifactory_username')]) { 
-            xxx += " -e NPM_PASS=\"${artifactory_username}\" "
+        withCredentials([usernamePassword(credentialsId: 'sym-artifactory-dev', passwordVariable: 'artifactory_password', usernameVariable: 'artifactory_username')]) { 
+            xxx += " -e NPM_PASS=\"${artifactory_password}\" "
         }
         withCredentials([usernamePassword(credentialsId: 'SNYK_BASEIMAGE_TOKEN', usernameVariable: 'FILLER', passwordVariable: 'snyk_token')]) { 
             xxx += " -e SNYK_TOKEN=\"${snyk_token}\" "
