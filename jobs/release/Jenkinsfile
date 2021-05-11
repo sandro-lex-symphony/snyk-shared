@@ -27,10 +27,14 @@ import com.symphony.security.containers.Artifactory
 //     }
 // }
 
+properties([    
+   parameters([    
+     stringParam(name: 'VAR1', defaultValue: 'grouk', description: "filler")
+   ])    
+ ])    
+  
+
 node {
-    parameters {
-        string(name: 'VAR1', defaultValue: 'grouk', description: 'filler')
-    }
     def snyk_image = 'slex-reg-test/snyk-release:experimental'
     def artifactory_url = 'artifact.symphony.com'
     stage('Pre') {
