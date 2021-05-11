@@ -46,15 +46,12 @@ node {
         withCredentials([usernamePassword(credentialsId: 'b727f90a-0844-41d8-933b-a9801398bddc', usernameVariable: 'git_username', passwordVariable: 'git_password')]) {
             xxx = " -e GIT_USER=\"${git_username}\" -e GIT_PASS=\"${git_password}\" "
         }
-        // withCredentials([usernamePassword(credentialsId: 'sym-artifactory-dev', passwordVariable: 'artifactory_password', usernameVariable: 'artifactory_username')]) { 
-        withCredentials([[$class: 'StringBinding', credentialsId: 'sym-artifactory-dev', variable: 'artifactory_password']]) {
-            xxx += " -e NPM_PASS=\"${artifactory_password}\" "
-        }
+     
         withCredentials([usernamePassword(credentialsId: 'SNYK_BASEIMAGE_TOKEN', usernameVariable: 'FILLER', passwordVariable: 'snyk_token')]) { 
             xxx += " -e SNYK_TOKEN=\"${snyk_token}\" "
         }
         
-        snyk_org = '0d7aca92-9445-4f4b-af39-ec3839023c03'
+        snyk_org = '16df2e12-d4cb-400d-aaf2-547db9ff07e9'
         prj_repo = 'github.com/SymphonyOSF/SFE-Client-App.git'
         prj = 'SFE-Client-App'
         git_hash = '20.12'
