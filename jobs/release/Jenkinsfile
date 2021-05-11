@@ -48,7 +48,7 @@ node {
         }
      
         withCredentials([usernamePassword(credentialsId: 'SNYK_BASEIMAGE_TOKEN', usernameVariable: 'FILLER', passwordVariable: 'snyk_token')]) { 
-            xxx += " -e SNYK_TOKEN=\"${snyk_token}\" "
+            xxx += " -e SECRET=\"${snyk_token}\" "
         }
         
         snyk_org = '16df2e12-d4cb-400d-aaf2-547db9ff07e9'
