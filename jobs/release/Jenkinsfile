@@ -68,19 +68,17 @@ node {
         if ( params.prj_type == 'java' ) {
             entrypoint = 'scan_java.sh'
         }
-        echo " ${entrypoint} "
-        // if ( ${params.prj_type} == 'sbe' ) {
-        //     entrypoint = 'scan_sbe.sh'
-        // }
-        // echo "${entrypoint}"
+        if ( params.prj_type == 'sbe' ) {
+            entrypoint = 'scan_sbe.sh'
+        }
 
-        // sh ("""#!/bin/sh -e\n docker run --rm \
-        //        ${secrets} \
-        //        -e SNYK_ORG='${params.snyk_org}' \
-        //        -e PRJ_REPO='${params.prj_repo}' \
-        //        -e GIT_HASH='${params.git_hash}' \
-        //        -e SNYK_SCAN='${params.snyk_scan}' \
-        //        ${artifactory_url}/${snyk_image} ${entrypoint}""")
+        sh ("""#!/bin/sh -e\n docker run --rm \
+               ${secrets} \
+               -e SNYK_ORG='${params.snyk_org}' \
+               -e PRJ_REPO='${params.prj_repo}' \
+               -e GIT_HASH='${params.git_hash}' \
+               -e SNYK_SCAN='${params.snyk_scan}' \
+               ${artifactory_url}/${snyk_image} ${entrypoint}""")
     }
 }
 
