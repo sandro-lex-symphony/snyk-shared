@@ -51,7 +51,7 @@ node {
         withCredentials([usernamePassword(credentialsId: 'SNYK_BASEIMAGE_TOKEN', usernameVariable: 'FILLER', passwordVariable: 'snyk_token')]) { 
             xxx += " -e SECRET='${snyk_token}' "
         }
-        def npmpass = sh (script: "cat /data/nvm/npmrc/npmrc-default | grep _auth | sed 's/_auth=//g'", returnStdout: true)
+        def npmpass = sh (script: "cat /data/nvm/npmrc/npmrc-default | grep _auth | sed 's/_auth=//g'", returnStdout: true).trim()
         echo "${npmpass}"
         echo  "xxx"
         snyk_org = '16df2e12-d4cb-400d-aaf2-547db9ff07e9'
