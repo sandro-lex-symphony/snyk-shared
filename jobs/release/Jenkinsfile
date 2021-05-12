@@ -30,8 +30,8 @@ import com.symphony.security.containers.Artifactory
 properties([    
    parameters([    
      stringParam(name: 'snyk_org', defaultValue: '', description: "filler"),
-     stringParam(name: 'prj_repo', defaultValue: '', description: "filler")
-     stringParam(name: 'git_hash', defaultValue: '', description: "filler")
+     stringParam(name: 'prj_repo', defaultValue: '', description: "filler"),
+     stringParam(name: 'git_hash', defaultValue: '', description: "filler"),
      stringParam(name: 'snyk_scan', defaultValue: '', description: "filler")
    ])    
  ])    
