@@ -32,7 +32,7 @@ properties([
      stringParam(name: 'snyk_org', defaultValue: '', description: "Snyk Org Id (not name), should have a token valid"),
      stringParam(name: 'prj_repo', defaultValue: '', description: "Git repo without protocol"),
      stringParam(name: 'git_hash', defaultValue: '', description: "branch | hash"),
-     stringParam(name: 'snyk_scan', defaultValue: '', description: "test | monitor"),
+     stringParam(name: 'snyk_scan', defaultValue: 'test', description: "test | monitor"),
      stringParam(name: 'prj_type', defaultValue: 'nodejs', description: "nodejs | java"),
      stringParam(name: 'node_version', defaultValue: '10.21.0', description: "nodejs version"),
      stringParam(name: 'java_version', defaultValue: '8', description: "8 | 11")
