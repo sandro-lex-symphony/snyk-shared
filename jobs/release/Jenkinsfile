@@ -58,6 +58,7 @@ node {
 
         echo "XXX"
         sh 'ls -al  /data/nvm/npmrc'
+        sh 'cat /data/nvm/npmrc/npmrc-default'
         echo "xxx"
         snyk_org = '16df2e12-d4cb-400d-aaf2-547db9ff07e9'
         prj_repo = 'github.com/SymphonyOSF/SFE-Login.git'
