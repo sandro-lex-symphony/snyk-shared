@@ -65,7 +65,7 @@ node {
         secrets += " -e MVN_PASS='${mvnpass}' "
         
         def script = 'scan_node_prj.sh'
-        if ( ${params.prj_type} == 'java'} ) {
+        if ( ${params.prj_type} == 'java' ) {
             script = 'scan_java.sh'
         }
         if ( ${params.prj_type} == 'sbe' ) {
