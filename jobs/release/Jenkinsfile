@@ -46,6 +46,7 @@ node {
     }
     stage('test one job at time') {
         sh 'ls -al  /data/maven'
+        sh 'cat /data/maven/settings.xml'
         def secrets = ''
         
         withCredentials([usernamePassword(credentialsId: 'b727f90a-0844-41d8-933b-a9801398bddc', usernameVariable: 'git_username', passwordVariable: 'git_password')]) {
