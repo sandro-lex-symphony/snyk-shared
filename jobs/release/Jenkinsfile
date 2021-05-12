@@ -62,7 +62,7 @@ node {
         def npmpass = sh (script: "#!/bin/sh -e\n cat /data/nvm/npmrc/npmrc-default | grep _auth | sed 's/_auth=//g'", returnStdout: true).trim()
         secrets += " -e NPM_PASS='${npmpass}' "
 
-        def mvnpass = sh (script: "#!/bin/sh -e\n grep -oPm1 \"(?<=<password>)[^<]+\" <<< \"$(cat /data/maven/settings.xml)\"", returnStdout: true).trim()
+        def mvnpass = sh (script: '#!/bin/sh -e\n grep -oPm1 "(?<=<password>)[^<]+" <<< "$(cat /data/maven/settings.xml)"', returnStdout: true).trim()
         echo 'XXX'
         echo "${mvnpass}"
         echo 'XXX'
