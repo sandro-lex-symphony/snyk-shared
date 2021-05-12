@@ -53,14 +53,14 @@ node {
         }
         def npmpass = sh (script: "cat /data/nvm/npmrc/npmrc-default | grep _auth | sed 's/_auth=//g'", returnStdout: true)
     
-        xxx += " -e NPM_PASS=${npmpass} "
+        xxx += " -e NPM_PASS=\"${npmpass}\" "
         snyk_org = '16df2e12-d4cb-400d-aaf2-547db9ff07e9'
         prj_repo = 'github.com/SymphonyOSF/SFE-Login.git'
         prj = 'SFE-Login'
         git_hash = '20.12'
         snyk_scan = 'test'
         echo "HELLO ${params.VAR1}"
-        sh "docker run --rm ${xxx}  -e SNYK_ORG=\"${snyk_org}\" -e PRJ_REPO=\"${prj_repo}\" -e PRJ=\"${prj}\" -e GIT_HASH=\"${git_hash}\" -e SNYK_SCAN=\"${snyk_scan}\" ${artifactory_url}/${snyk_image} scan_node_prj.sh"
+        sh "docker run --rm ${xxx} -e SNYK_ORG=\"${snyk_org}\" -e PRJ_REPO=\"${prj_repo}\" -e PRJ=\"${prj}\" -e GIT_HASH=\"${git_hash}\" -e SNYK_SCAN=\"${snyk_scan}\" ${artifactory_url}/${snyk_image} scan_node_prj.sh"
     }
 }
 
