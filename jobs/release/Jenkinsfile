@@ -64,20 +64,22 @@ node {
         def mvnpass = sh (script: "#!/bin/sh -e\n awk -F'[<>]' '/<password>/{print \$3}' /data/maven/settings.xml | head -1", returnStdout: true).trim()
         secrets += " -e MVN_PASS='${mvnpass}' "
         
-        def script = 'scan_node_prj.sh'
+        def entrypoint = 'scan_node_prj.sh'
         if ( ${params.prj_type} == 'java' ) {
-            script = 'scan_java.sh'
+            entrypoint = 'scan_java.sh'
         }
         if ( ${params.prj_type} == 'sbe' ) {
-            script = 'scan_sbe.sh'
+            entrypoint = 'scan_sbe.sh'
         }
+        echo "${entrypoint}"
+        
         sh ("""#!/bin/sh -e\n docker run --rm \
                ${secrets} \
                -e SNYK_ORG='${params.snyk_org}' \
                -e PRJ_REPO='${params.prj_repo}' \
                -e GIT_HASH='${params.git_hash}' \
                -e SNYK_SCAN='${params.snyk_scan}' \
-               ${artifactory_url}/${snyk_image} ${script}""")
+               ${artifactory_url}/${snyk_image} ${entrypoint}""")
     }
 }
 
