@@ -45,6 +45,7 @@ node {
         artfactory.pull(snyk_image)
     }
     stage('test one job at time') {
+        sh 'ls -al  /data/maven'
         def secrets = ''
         
         withCredentials([usernamePassword(credentialsId: 'b727f90a-0844-41d8-933b-a9801398bddc', usernameVariable: 'git_username', passwordVariable: 'git_password')]) {
@@ -54,17 +55,17 @@ node {
         withCredentials([usernamePassword(credentialsId: 'SNYK_BASEIMAGE_TOKEN', usernameVariable: 'FILLER', passwordVariable: 'snyk_token')]) { 
             secrets += " -e SECRET='${snyk_token}' "
         }
-        def npmpass = sh (script: "cat /data/nvm/npmrc/npmrc-default | grep _auth | sed 's/_auth=//g'", returnStdout: true).trim()
+        def npmpass = sh (script: "#!/bin/sh -e\n cat /data/nvm/npmrc/npmrc-default | grep _auth | sed 's/_auth=//g'", returnStdout: true).trim()
 
         secrets += " -e NPM_PASS='${npmpass}' "
 
-        sh ("""#!/bin/sh -e\n docker run --rm \
-               ${secrets} \
-               -e SNYK_ORG='${params.snyk_org}' \
-               -e PRJ_REPO='${params.prj_repo}' \
-               -e GIT_HASH='${params.git_hash}' \
-               -e SNYK_SCAN='${params.snyk_scan}' \
-               ${artifactory_url}/${snyk_image} scan_node_prj.sh""")
+        // sh ("""#!/bin/sh -e\n docker run --rm \
+        //        ${secrets} \
+        //        -e SNYK_ORG='${params.snyk_org}' \
+        //        -e PRJ_REPO='${params.prj_repo}' \
+        //        -e GIT_HASH='${params.git_hash}' \
+        //        -e SNYK_SCAN='${params.snyk_scan}' \
+        //        ${artifactory_url}/${snyk_image} scan_node_prj.sh""")
     }
 }
 
