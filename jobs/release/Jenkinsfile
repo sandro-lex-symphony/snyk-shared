@@ -29,10 +29,13 @@ import com.symphony.security.containers.Artifactory
 
 properties([    
    parameters([    
-     stringParam(name: 'snyk_org', defaultValue: '', description: "filler"),
-     stringParam(name: 'prj_repo', defaultValue: '', description: "filler"),
-     stringParam(name: 'git_hash', defaultValue: '', description: "filler"),
-     stringParam(name: 'snyk_scan', defaultValue: '', description: "filler")
+     stringParam(name: 'snyk_org', defaultValue: '', description: "Snyk Org Id (not name), should have a token valid"),
+     stringParam(name: 'prj_repo', defaultValue: '', description: "Git repo without protocol"),
+     stringParam(name: 'git_hash', defaultValue: '', description: "branch | hash"),
+     stringParam(name: 'snyk_scan', defaultValue: '', description: "test | monitor"),
+     stringParam(name: 'prj_type', defaultValue: 'nodejs', description: "nodejs | java"),
+     stringParam(name: 'node_version', defaultValue: '10.21.0', description: "nodejs version"),
+     stringParam(name: 'java_version', defaultValue: '8', description: "8 | 11")
    ])    
  ])    
   
@@ -57,8 +60,12 @@ node {
             secrets += " -e SECRET='${snyk_token}' "
         }
         def npmpass = sh (script: "#!/bin/sh -e\n cat /data/nvm/npmrc/npmrc-default | grep _auth | sed 's/_auth=//g'", returnStdout: true).trim()
-
         secrets += " -e NPM_PASS='${npmpass}' "
+
+        def mvnpass = sh (script: "#!/bin/sh -e\n grep -oPm1 \"(?<=<password>)[^<]+\" <<< \"$(cat ~/data/maven/settings.xml)", returnStdout: true).trim()
+        echo 'XXX'
+        echo "${mvnpass}"
+        echo 'XXX'
 
         // sh ("""#!/bin/sh -e\n docker run --rm \
         //        ${secrets} \
