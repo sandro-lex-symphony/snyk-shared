@@ -61,7 +61,7 @@ node {
         git_hash = '20.12'
         snyk_scan = 'test'
         echo "HELLO ${params.VAR1}"
-        sh ("""#!/bin/sh -e docker run --rm \
+        sh ("""#!/bin/sh -e\n docker run --rm \
                ${secrets} \
                -e SNYK_ORG='${snyk_org}' \
                -e PRJ_REPO='${prj_repo}' \
