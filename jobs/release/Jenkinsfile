@@ -52,7 +52,8 @@ node {
             xxx += " -e SECRET='${snyk_token}' "
         }
         def npmpass = sh (script: "cat /data/nvm/npmrc/npmrc-default | grep _auth | sed 's/_auth=//g'", returnStdout: true)
-    
+        echo "${npmpass}"
+        echo  "xxx"
         snyk_org = '16df2e12-d4cb-400d-aaf2-547db9ff07e9'
         prj_repo = 'github.com/SymphonyOSF/SFE-Login.git'
         prj = 'SFE-Login'
