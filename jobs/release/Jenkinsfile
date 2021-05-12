@@ -64,14 +64,14 @@ node {
         def mvnpass = sh (script: "#!/bin/sh -e\n awk -F'[<>]' '/<password>/{print \$3}' /data/maven/settings.xml | head -1", returnStdout: true).trim()
         secrets += " -e MVN_PASS='${mvnpass}' "
         
-        def entrypoint = 'scan_node_prj.sh'
-        if ( ${params.prj_type} == 'java' ) {
-            entrypoint = 'scan_java.sh'
-        }
-        if ( ${params.prj_type} == 'sbe' ) {
-            entrypoint = 'scan_sbe.sh'
-        }
-        echo "${entrypoint}"
+        // def entrypoint = 'scan_node_prj.sh'
+        // if ( ${params.prj_type} == 'java' ) {
+        //     entrypoint = 'scan_java.sh'
+        // }
+        // if ( ${params.prj_type} == 'sbe' ) {
+        //     entrypoint = 'scan_sbe.sh'
+        // }
+        // echo "${entrypoint}"
 
         // sh ("""#!/bin/sh -e\n docker run --rm \
         //        ${secrets} \
