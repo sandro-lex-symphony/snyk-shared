@@ -65,7 +65,7 @@ node {
         secrets += " -e MVN_PASS='${mvnpass}' "
         
         def entrypoint = 'scan_node_prj.sh'
-        if ( ${params.prj_type} == 'java' ) {
+        if ( params.prj_type == 'java' ) {
             entrypoint = 'scan_java.sh'
         }
         echo " ${entrypoint} "
