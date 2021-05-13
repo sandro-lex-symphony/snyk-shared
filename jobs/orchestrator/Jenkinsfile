@@ -52,10 +52,11 @@
 node {
     stage('XXXX') {
         def projects = [:]
+        def snyk_org = "16df2e12-d4cb-400d-aaf2-547db9ff07e9"
 
         projects['client'] = {
             build job: 'test2', parameters: [
-                string(name: 'snyk_org', value: "16df2e12-d4cb-400d-aaf2-547db9ff07e9"),
+                string(name: 'snyk_org', value: snyk_org),
                 string(name: 'prj_repo', value: "github.com/SymphonyOSF/SFE-Client-App.git"),
                 string(name: 'git_hash', value: "20.12")
             ],
@@ -64,9 +65,19 @@ node {
 
         projects['login'] = {
             build job: 'test2', parameters: [
-                string(name: 'snyk_org', value: "16df2e12-d4cb-400d-aaf2-547db9ff07e9"),
+                string(name: 'snyk_org', value: snyk_org),
                 string(name: 'prj_repo', value: "github.com/SymphonyOSF/SFE-Login.git"),
                 string(name: 'git_hash', value: "20.12")
+            ],
+            wait: true
+        }
+
+        projects['sbe'] = {
+            build job: 'test2', parameters: [
+                string(name: 'snyk_org', value: snyk_org),
+                string(name: 'prj_repo', value: "github.com/SymphonyOSF/SBE.git"),
+                string(name: 'git_hash', value: "20.12")
+                string(name: 'prj_type', value: "sbe")
             ],
             wait: true
         }
