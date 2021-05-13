@@ -67,7 +67,7 @@ node {
         for (p in projects) {
             params = p.value
             repo = params['prj_repo']
-            echo "${p.key} - ${prj_repo}"
+            echo "${p.key} - ${repo}"
         }
         echo "YYYY"
         // parallel createJobs(projects)
