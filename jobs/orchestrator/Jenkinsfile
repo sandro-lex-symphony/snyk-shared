@@ -43,30 +43,25 @@ def createJobs(prjs) {
     out = [:]
     for (key in prjs.keySet()) {
         out[key] = {
-            build job: 'test2', parameters: prjs[key], wait: false
+            build job: 'test2', parameters: prjs[key], wait: true
         }
     }
     return out
-    // return {
-    //     build job: 'test2', parameters: params,
-    //     wait: true
-    // }
 }
+
 node {
     stage('XXXX') {
         def projects = [:]
 
-        params = []
-        params.add(string(name: 'snyk_org', value: "16df2e12-d4cb-400d-aaf2-547db9ff07e9"))
-        params.add(string(name: 'prj_repo', value: "github.com/SymphonyOSF/SFE-Client-App.git"))
-        params.add(string(name: 'git_hash', value: "20.12"))
-        projects['client'] = params
+        projects['client'] = []
+        projects['client'].add(string(name: 'snyk_org', value: "16df2e12-d4cb-400d-aaf2-547db9ff07e9"))
+        projects['client'].add(string(name: 'prj_repo', value: "github.com/SymphonyOSF/SFE-Client-App.git"))
+        projects['client'].add(string(name: 'git_hash', value: "20.12"))
 
-        params = []
-        params.add(string(name: 'snyk_org', value: "16df2e12-d4cb-400d-aaf2-547db9ff07e9"))
-        params.add(string(name: 'prj_repo', value: "github.com/SymphonyOSF/SFE-Login.git"))
-        params.add(string(name: 'git_hash', value: "20.12"))
-        projects['login'] = params
+        projects['login'] = []
+        projects['login'].add(string(name: 'snyk_org', value: "16df2e12-d4cb-400d-aaf2-547db9ff07e9"))
+        projects['login'].add(string(name: 'prj_repo', value: "github.com/SymphonyOSF/SFE-Login.git"))
+        projects['login'].add(string(name: 'git_hash', value: "20.12"))
 
         parallel createJobs(projects)
 
