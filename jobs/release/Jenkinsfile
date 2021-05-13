@@ -39,7 +39,8 @@ properties([
    ])    
  ])    
   
-def scanProject(snyk_org, prj_repo, git_hash, snyk_scan, prj_type) {
+def scanProject(snyk_org, prj_repo, git_hash, snyk_scan, prj_type, artifactory_url, snyk_image) {
+    
      echo """########## PARAMS ############ \
         # snyk_org: ${snyk_org} \
         # prj_repo: ${prj_repo} \
@@ -90,7 +91,7 @@ node {
         artfactory.pull(snyk_image)
     }
     stage('using function') {
-        scanProject(params.snyk_org, params.prj_repo, params.git_hash, params.snyk_scan, params.prj_type) 
+        scanProject(params.snyk_org, params.prj_repo, params.git_hash, params.snyk_scan, params.prj_type, artifactory_url, snyk_image) 
     }
     // stage('test one job at time') {
     //     echo """########## PARAMS ############ \
