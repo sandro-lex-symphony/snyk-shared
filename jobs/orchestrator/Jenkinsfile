@@ -63,7 +63,14 @@ node {
         projects['login'].add(string(name: 'prj_repo', value: "github.com/SymphonyOSF/SFE-Login.git"))
         projects['login'].add(string(name: 'git_hash', value: "20.12"))
 
-        parallel createJobs(projects)
+        echo "XXXX"
+        for (p in projects) {
+            params = p.value
+            repo = params['prj_repo']
+            echo "${p.key} - ${prj_repo}"
+        }
+        echo "YYYY"
+        // parallel createJobs(projects)
 
         // projects['client'] = {
         //     build job: 'test2', parameters: [
