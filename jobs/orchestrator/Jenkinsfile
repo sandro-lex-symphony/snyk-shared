@@ -39,38 +39,46 @@
 //         )
 //     }
 // }
-def createJob(snyk_org, prj_repo, git_hash) {
-    return {
-        build job: 'test2', parameters: [
-            string(name: 'snyk_org', value: snyk_org),
-            string(name: 'prj_repo', value: prj_repo),
-            string(name: 'git_hash', value: git_hash)
-        ],
-        wait: true
+def createJobs(prjs) {
+    out = [:]
+    for (key in prjs.keySet()) {
+        out[key] = {
+            build job: 'test2', parameters: prjs[key], wait: false
+        }
     }
+    return out
+    // return {
+    //     build job: 'test2', parameters: params,
+    //     wait: true
+    // }
 }
 node {
     stage('XXXX') {
         def projects = [:]
 
-        // projects['login'] = {
+        params = []
+        params.add(string(name: 'snyk_org', value: "16df2e12-d4cb-400d-aaf2-547db9ff07e9"))
+        params.add(string(name: 'prj_repo', value: "github.com/SymphonyOSF/SFE-Client-App.git"))
+        params.add(string(name: 'git_hash', value: "20.12"))
+        projects['client'] = params
+
+        params = []
+        params.add(string(name: 'snyk_org', value: "16df2e12-d4cb-400d-aaf2-547db9ff07e9"))
+        params.add(string(name: 'prj_repo', value: "github.com/SymphonyOSF/SFE-Login.git"))
+        params.add(string(name: 'git_hash', value: "20.12"))
+        projects['login'] = params
+
+        parallel createJobs(projects)
+
+        // projects['client'] = {
         //     build job: 'test2', parameters: [
         //         string(name: 'snyk_org', value: "16df2e12-d4cb-400d-aaf2-547db9ff07e9"),
-        //         string(name: 'prj_repo', value: "github.com/SymphonyOSF/SFE-Login.git"),
+        //         string(name: 'prj_repo', value: "github.com/SymphonyOSF/SFE-Client-App.git"),
         //         string(name: 'git_hash', value: "20.12")
         //     ],
         //     wait: true
         // }
-        projects['login'] = createJob("16df2e12-d4cb-400d-aaf2-547db9ff07e9", "github.com/SymphonyOSF/SFE-Login.git", "20.12")
-        projects['client'] = {
-            build job: 'test2', parameters: [
-                string(name: 'snyk_org', value: "16df2e12-d4cb-400d-aaf2-547db9ff07e9"),
-                string(name: 'prj_repo', value: "github.com/SymphonyOSF/SFE-Client-App.git"),
-                string(name: 'git_hash', value: "20.12")
-            ],
-            wait: true
-        }
 
-        parallel projects
+        // parallel projects
     }
 }
