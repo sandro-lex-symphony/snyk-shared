@@ -39,48 +39,38 @@
 //         )
 //     }
 // }
-def createJobs(prjs) {
-    out = [:]
-    for (key in prjs.keySet()) {
-        out[key] = {
-            build job: 'test2', parameters: prjs[key], wait: true
-        }
-    }
-    return out
-}
+// def createJobs(prjs) {
+//     out = [:]
+//     for (key in prjs.keySet()) {
+//         out[key] = {
+//             build job: 'test2', parameters: prjs[key], wait: true
+//         }
+//     }
+//     return out
+// }
 
 node {
     stage('XXXX') {
         def projects = [:]
 
-        projects['client'] = []
-        projects['client'].add(string(name: 'snyk_org', value: "16df2e12-d4cb-400d-aaf2-547db9ff07e9"))
-        projects['client'].add(string(name: 'prj_repo', value: "github.com/SymphonyOSF/SFE-Client-App.git"))
-        projects['client'].add(string(name: 'git_hash', value: "20.12"))
-
-        projects['login'] = []
-        projects['login'].add(string(name: 'snyk_org', value: "16df2e12-d4cb-400d-aaf2-547db9ff07e9"))
-        projects['login'].add(string(name: 'prj_repo', value: "github.com/SymphonyOSF/SFE-Login.git"))
-        projects['login'].add(string(name: 'git_hash', value: "20.12"))
-
-        echo "XXXX"
-        for (p in projects) {
-            params = p.value
-            repo = params['prj_repo']
-            echo "${p.key} - ${repo}"
+        projects['client'] = {
+            build job: 'test2', parameters: [
+                string(name: 'snyk_org', value: "16df2e12-d4cb-400d-aaf2-547db9ff07e9"),
+                string(name: 'prj_repo', value: "github.com/SymphonyOSF/SFE-Client-App.git"),
+                string(name: 'git_hash', value: "20.12")
+            ],
+            wait: true
         }
-        echo "YYYY"
-        // parallel createJobs(projects)
 
-        // projects['client'] = {
-        //     build job: 'test2', parameters: [
-        //         string(name: 'snyk_org', value: "16df2e12-d4cb-400d-aaf2-547db9ff07e9"),
-        //         string(name: 'prj_repo', value: "github.com/SymphonyOSF/SFE-Client-App.git"),
-        //         string(name: 'git_hash', value: "20.12")
-        //     ],
-        //     wait: true
-        // }
+        projects['login'] = {
+            build job: 'test2', parameters: [
+                string(name: 'snyk_org', value: "16df2e12-d4cb-400d-aaf2-547db9ff07e9"),
+                string(name: 'prj_repo', value: "github.com/SymphonyOSF/SFE-Login.git"),
+                string(name: 'git_hash', value: "20.12")
+            ],
+            wait: true
+        }
 
-        // parallel projects
+        parallel projects
     }
 }
