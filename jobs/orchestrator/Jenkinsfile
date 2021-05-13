@@ -76,7 +76,7 @@ node {
             build job: 'test2', parameters: [
                 string(name: 'snyk_org', value: snyk_org),
                 string(name: 'prj_repo', value: "github.com/SymphonyOSF/SBE.git"),
-                string(name: 'git_hash', value: "20.12")
+                string(name: 'git_hash', value: "20.12"),
                 string(name: 'prj_type', value: "sbe")
             ],
             wait: true
