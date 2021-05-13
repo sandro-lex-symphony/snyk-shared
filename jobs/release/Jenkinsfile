@@ -74,10 +74,10 @@ def scanProject(snyk_org, prj_repo, git_hash, snyk_scan, prj_type) {
 
     sh ("""#!/bin/sh -e\n docker run --rm \
             ${secrets} \
-            -e SNYK_ORG='${params.snyk_org}' \
-            -e PRJ_REPO='${params.prj_repo}' \
-            -e GIT_HASH='${params.git_hash}' \
-            -e SNYK_SCAN='${params.snyk_scan}' \
+            -e SNYK_ORG='${snyk_org}' \
+            -e PRJ_REPO='${prj_repo}' \
+            -e GIT_HASH='${git_hash}' \
+            -e SNYK_SCAN='${snyk_scan}' \
             ${artifactory_url}/${snyk_image} ${entrypoint}""")
 }
 
@@ -90,7 +90,7 @@ node {
         artfactory.pull(snyk_image)
     }
     stage('using function') {
-        scanProject(param.snyk_org, params.prj_repo, params.git_hash, params.snyk_scan, params.prj_type) 
+        scanProject(params.snyk_org, params.prj_repo, params.git_hash, params.snyk_scan, params.prj_type) 
     }
     // stage('test one job at time') {
     //     echo """########## PARAMS ############ \
