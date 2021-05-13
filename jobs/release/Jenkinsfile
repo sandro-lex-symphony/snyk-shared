@@ -90,7 +90,7 @@ node {
         artfactory.pull(snyk_image)
     }
     stage('using function') {
-        scanProject(param.snyk_org, params.prj_repo, params.git_hash, params.snyk_scan, params.prj_type) {
+        scanProject(param.snyk_org, params.prj_repo, params.git_hash, params.snyk_scan, params.prj_type) 
     }
     // stage('test one job at time') {
     //     echo """########## PARAMS ############ \
