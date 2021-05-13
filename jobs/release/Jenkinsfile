@@ -39,23 +39,13 @@ properties([
    ])    
  ])    
   
-
-node {
-    def snyk_image = 'slex-reg-test/snyk-release:experimental'
-    def artifactory_url = 'artifact.symphony.com'
-    stage('Pre') {
-        artfactory = new Artifactory(this)
-        artfactory.pull(snyk_image)
-    }
-    stage('test one job at time') {
-        echo """########## PARAMS ############ \
-        # snyk_org: ${params.snyk_org} \
-        # prj_repo: ${params.prj_repo} \
-        # git_hash: ${params.git_hash} \
-        # snyk_scan: ${params.snyk_scan} \
-        # prj_type: ${params.prj_tpe} \
-        # node_version: ${params.node_version} \
-        # java_version: ${params.java_version} \
+def scanProject(snyk_org, prj_repo, git_hash, snyk_scan, prj_type) {
+     echo """########## PARAMS ############ \
+        # snyk_org: ${snyk_org} \
+        # prj_repo: ${prj_repo} \
+        # git_hash: ${git_hash} \
+        # snyk_scan: ${snyk_scan} \
+        # prj_type: ${prj_tpe} \
         #####################################"""
 
         def secrets = ''
@@ -75,10 +65,10 @@ node {
         secrets += " -e MVN_PASS='${mvnpass}' "
         
         def entrypoint = 'scan_node_prj.sh'
-        if ( params.prj_type == 'java' ) {
+        if ( prj_type == 'java' ) {
             entrypoint = 'scan_java.sh'
         }
-        if ( params.prj_type == 'sbe' ) {
+        if ( prj_type == 'sbe' ) {
             entrypoint = 'scan_sbe.sh'
         }
 
@@ -90,6 +80,61 @@ node {
                -e SNYK_SCAN='${params.snyk_scan}' \
                ${artifactory_url}/${snyk_image} ${entrypoint}""")
     }
+}
+
+node {
+    def snyk_image = 'slex-reg-test/snyk-release:experimental'
+    def artifactory_url = 'artifact.symphony.com'
+    stage('Pre') {
+        artfactory = new Artifactory(this)
+        artfactory.pull(snyk_image)
+    }
+    stage('using function') {
+        scanProject(param.snyk_org, params.prj_repo, params.git_hash, params.snyk_scan, params.prj_type) {
+    }
+    // stage('test one job at time') {
+    //     echo """########## PARAMS ############ \
+    //     # snyk_org: ${params.snyk_org} \
+    //     # prj_repo: ${params.prj_repo} \
+    //     # git_hash: ${params.git_hash} \
+    //     # snyk_scan: ${params.snyk_scan} \
+    //     # prj_type: ${params.prj_tpe} \
+    //     # node_version: ${params.node_version} \
+    //     # java_version: ${params.java_version} \
+    //     #####################################"""
+
+    //     def secrets = ''
+        
+    //     withCredentials([usernamePassword(credentialsId: 'b727f90a-0844-41d8-933b-a9801398bddc', usernameVariable: 'git_username', passwordVariable: 'git_password')]) {
+    //         secrets = " -e GIT_USER='${git_username}' -e GIT_PASS='${git_password}' "
+    //     }
+        
+    //     withCredentials([usernamePassword(credentialsId: 'SNYK_BASEIMAGE_TOKEN', usernameVariable: 'FILLER', passwordVariable: 'snyk_token')]) { 
+    //         secrets += " -e SECRET='${snyk_token}' "
+    //     }
+    //     def npmpass = sh (script: "#!/bin/sh -e\n cat /data/nvm/npmrc/npmrc-default | grep _auth | sed 's/_auth=//g'", returnStdout: true).trim()
+    //     secrets += " -e NPM_PASS='${npmpass}' "
+
+    //     // def mvnpass = sh (script: '#!/bin/sh -e\n grep -oPm1 "(?<=<password>)[^<]+" <<< "$(cat /data/maven/settings.xml)"', returnStdout: true).trim()
+    //     def mvnpass = sh (script: "#!/bin/sh -e\n awk -F'[<>]' '/<password>/{print \$3}' /data/maven/settings.xml | head -1", returnStdout: true).trim()
+    //     secrets += " -e MVN_PASS='${mvnpass}' "
+        
+    //     def entrypoint = 'scan_node_prj.sh'
+    //     if ( params.prj_type == 'java' ) {
+    //         entrypoint = 'scan_java.sh'
+    //     }
+    //     if ( params.prj_type == 'sbe' ) {
+    //         entrypoint = 'scan_sbe.sh'
+    //     }
+
+    //     sh ("""#!/bin/sh -e\n docker run --rm \
+    //            ${secrets} \
+    //            -e SNYK_ORG='${params.snyk_org}' \
+    //            -e PRJ_REPO='${params.prj_repo}' \
+    //            -e GIT_HASH='${params.git_hash}' \
+    //            -e SNYK_SCAN='${params.snyk_scan}' \
+    //            ${artifactory_url}/${snyk_image} ${entrypoint}""")
+    // }
 }
 
 // node {
