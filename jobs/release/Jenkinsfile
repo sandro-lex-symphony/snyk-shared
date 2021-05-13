@@ -83,16 +83,46 @@ def scanProject(snyk_org, prj_repo, git_hash, snyk_scan, prj_type, artifactory_u
 }
 
 
-node {
-    def snyk_image = 'slex-reg-test/snyk-release:experimental'
-    def artifactory_url = 'artifact.symphony.com'
-    stage('Pre') {
-        artfactory = new Artifactory(this)
-        artfactory.pull(snyk_image)
+// node {
+//     def snyk_image = 'slex-reg-test/snyk-release:experimental'
+//     def artifactory_url = 'artifact.symphony.com'
+//     stage('Pre') {
+//         artfactory = new Artifactory(this)
+//         artfactory.pull(snyk_image)
+//     }
+//     stage('using function') {
+//         scanProject(params.snyk_org, params.prj_repo, params.git_hash, params.snyk_scan, params.prj_type, artifactory_url, snyk_image) 
+//     }
+// }
+
+// Our initial list of strings we want to echo in parallel
+def stringsToEcho = ["cat /etc/os-release", "cat /etc/passwd", "ls /var"]
+
+// The map we'll store the parallel steps in before executing them.
+def stepsForParallel = stringsToEcho.collectEntries {
+    ["echoing ${it}" : transformIntoStep(it)]
+}
+
+// Actually run the steps in parallel - parallel takes a map as an argument,
+// hence the above.
+parallel stepsForParallel
+
+// Take the string and echo it.
+def transformIntoStep(inputString) {
+    // We need to wrap what we return in a Groovy closure, or else it's invoked
+    // when this method is called, not when we pass it to parallel.
+    // To do this, you need to wrap the code below in { }, and either return
+    // that explicitly, or use { -> } syntax.
+    return {
+        node {
+            echo inputString
+            sh "docker run --rm -i alpine:3.13 ${inputString}"
+        }
     }
-    stage('using function') {
-        scanProject(params.snyk_org, params.prj_repo, params.git_hash, params.snyk_scan, params.prj_type, artifactory_url, snyk_image) 
-    }
+}
+
+
+
     // stage('test one job at time') {
     //     echo """########## PARAMS ############ \
     //     # snyk_org: ${params.snyk_org} \
@@ -136,7 +166,7 @@ node {
     //            -e SNYK_SCAN='${params.snyk_scan}' \
     //            ${artifactory_url}/${snyk_image} ${entrypoint}""")
     // }
-}
+// }
 
 // node {
 
