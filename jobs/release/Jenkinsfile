@@ -48,14 +48,15 @@ node {
         artfactory.pull(snyk_image)
     }
     stage('test one job at time') {
-        echo '########## PARAMS ############'
-        echo "# snyk_org: ${params.snyk_org}"
-        echo "# prj_repo: ${params.prj_repo}"
-        echo "# git_hash: ${params.git_hash}"
-        echo "# snyk_scan: ${params.snyk_scan}"
-        echo "# prj_type: ${params.prj_tpe}"
-        echo "# node_version: ${params.node_version}"
-        echo "# java_version: ${params.java_version}"
+        echo """########## PARAMS ############ \
+        # snyk_org: ${params.snyk_org} \
+        # prj_repo: ${params.prj_repo} \
+        # git_hash: ${params.git_hash} \
+        # snyk_scan: ${params.snyk_scan} \
+        # prj_type: ${params.prj_tpe} \
+        # node_version: ${params.node_version} \
+        # java_version: ${params.java_version} \
+        #####################################"""
 
         def secrets = ''
         
