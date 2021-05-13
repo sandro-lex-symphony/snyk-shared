@@ -42,7 +42,7 @@
 
 node {
     stage('XXXX') {
-        def projects[:]
+        def projects = [:]
 
         projects['login'] = {
             build job: 'test2', parameters: [
