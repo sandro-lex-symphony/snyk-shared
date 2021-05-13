@@ -45,7 +45,7 @@ def scanProject(snyk_org, prj_repo, git_hash, snyk_scan, prj_type) {
         # prj_repo: ${prj_repo} \
         # git_hash: ${git_hash} \
         # snyk_scan: ${snyk_scan} \
-        # prj_type: ${prj_tpe} \
+        # prj_type: ${prj_type} \
         #####################################"""
 
     def secrets = ''
