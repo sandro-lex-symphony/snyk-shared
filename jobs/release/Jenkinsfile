@@ -39,7 +39,7 @@ properties([
    ])    
  ])    
   
-def scanProject(snyk_org, prj_repo, git_hash, snyk_scan, prj_type, artifactory_url, snyk_image) {
+def scanProject(snyk_org, prj_repo, git_hash, snyk_scan, prj_type) {
     
      echo """########## PARAMS ############ \
         # snyk_org: ${snyk_org} \
@@ -48,6 +48,9 @@ def scanProject(snyk_org, prj_repo, git_hash, snyk_scan, prj_type, artifactory_u
         # snyk_scan: ${snyk_scan} \
         # prj_type: ${prj_type} \
         #####################################"""
+
+    def snyk_image = 'slex-reg-test/snyk-release:experimental'
+    def artifactory_url = 'artifact.symphony.com'
 
     artfactory = new Artifactory(this)
     artfactory.pull(snyk_image)
@@ -88,7 +91,7 @@ def scanProject(snyk_org, prj_repo, git_hash, snyk_scan, prj_type, artifactory_u
 
 node {
     stage("SNYK SCAN ${params.prj_repo}") {
-        scanProject(params.snyk_org, params.prj_repo, params.git_hash, params.snyk_scan, params.prj_type, artifactory_url, snyk_image) 
+        scanProject(params.snyk_org, params.prj_repo, params.git_hash, params.snyk_scan, params.prj_type) 
     }
 }
 
@@ -96,7 +99,7 @@ node {
     // stage('test one job at time') {
     //     echo """########## PARAMS ############ \
     //     # snyk_org: ${params.snyk_org} \
-    //     # prj_repo: ${params.prj_repo} \
+    //     # prj_repo: ${params./prj_repo} \
     //     # git_hash: ${params.git_hash} \
     //     # snyk_scan: ${params.snyk_scan} \
     //     # prj_type: ${params.prj_tpe} \
