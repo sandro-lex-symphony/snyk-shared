@@ -16,10 +16,33 @@
 //     }
 // }
 
+// node {
+//     stage('Parallel Test') {
+//         parallel (
+//             stage('login') {
+//                 build job: 'test2', parameters: [
+//                     string(name: 'snyk_org', value: "16df2e12-d4cb-400d-aaf2-547db9ff07e9"),
+//                     string(name: 'prj_repo', value: "github.com/SymphonyOSF/SFE-Login.git"),
+//                     string(name: 'git_hash', value: "20.12")
+//                 ],
+//                 wait: true
+//             },
+//             stage('client') {
+//                 build job: 'test2', parameters: [
+//                     string(name: 'snyk_org', value: "16df2e12-d4cb-400d-aaf2-547db9ff07e9"),
+//                     string(name: 'prj_repo', value: "github.com/SymphonyOSF/SFE-Client-App.git"),
+//                     string(name: 'git_hash', value: "20.12")
+//                 ],
+//                 wait: true
+//             }
+//         )
+//     }
+// }
+
 node {
     stage('Parallel Test') {
         parallel (
-            stage('login') {
+            login: {
                 build job: 'test2', parameters: [
                     string(name: 'snyk_org', value: "16df2e12-d4cb-400d-aaf2-547db9ff07e9"),
                     string(name: 'prj_repo', value: "github.com/SymphonyOSF/SFE-Login.git"),
@@ -27,10 +50,10 @@ node {
                 ],
                 wait: true
             },
-            stage('client') {
+            client: {
                 build job: 'test2', parameters: [
                     string(name: 'snyk_org', value: "16df2e12-d4cb-400d-aaf2-547db9ff07e9"),
-                    string(name: 'prj_repo', value: "github.com/SymphonyOSF/SFE-Client-App.git"),
+                    string(name: 'prj_repo', value: "github.com/SymphonyOSF/SFE-Login.git"),
                     string(name: 'git_hash', value: "20.12")
                 ],
                 wait: true
@@ -38,3 +61,4 @@ node {
         )
     }
 }
+
