@@ -19,7 +19,7 @@
 node {
     stage('Parallel Test') {
         parallel (
-            login: {
+            stage('login') {
                 build job: 'test2', parameters: [
                     string(name: 'snyk_org', value: "16df2e12-d4cb-400d-aaf2-547db9ff07e9"),
                     string(name: 'prj_repo', value: "github.com/SymphonyOSF/SFE-Login.git"),
@@ -27,7 +27,7 @@ node {
                 ],
                 wait: true
             },
-            client: {
+            stage('client') {
                 build job: 'test2', parameters: [
                     string(name: 'snyk_org', value: "16df2e12-d4cb-400d-aaf2-547db9ff07e9"),
                     string(name: 'prj_repo', value: "github.com/SymphonyOSF/SFE-Client-App.git"),
